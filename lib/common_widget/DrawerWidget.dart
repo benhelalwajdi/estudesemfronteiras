@@ -1,4 +1,7 @@
+import 'package:estudesemfronteiras/about.dart';
+import 'package:estudesemfronteiras/MyHomePage.dart';
 import 'package:estudesemfronteiras/main.dart';
+import 'package:estudesemfronteiras/promocaoes.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -18,32 +21,55 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           children: <Widget>[
             _createDrawerHeader(),
             _createDrawerItem(
-                icon: Icons.home,
-                text: 'Home',
+                icon: FontAwesomeIcons.home,
+                text: 'Pagina Inicial',
+                onTap: () => {Navigator.popAndPushNamed(
+                            context,
+                            '/home'
+                          )
+
+                    }),
+            _createDrawerItem(
+                icon: FontAwesomeIcons.chartLine,
+                text: 'Extensão/Aperfeiçoamento',
                 onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => MyHomePage()),
                     )),
             _createDrawerItem(
-                icon: FontAwesomeIcons.user,
-                text: 'Sign In',
+                icon: FontAwesomeIcons.addressCard,
+                text: 'Quem somos',
+                onTap: () => Navigator.popAndPushNamed(
+                      context,
+                      '/about',
+                    )),
+            _createDrawerItem(
+                icon: FontAwesomeIcons.userGraduate,
+                text: 'Pós-Graduação',
                 onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => MyHomePage()),
                     )),
             _createDrawerItem(
-                icon: Icons.favorite_border,
-                text: 'Wish List',
+                icon: FontAwesomeIcons.certificate,
+                text: 'Certificação',
                 onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => MyHomePage()),
                     )),
             _createDrawerItem(
-                icon: Icons.call,
-                text: 'Contact Us',
+                icon: FontAwesomeIcons.userFriends,
+                text: 'Dúvidas',
                 onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => MyHomePage()),
+                    )),
+            _createDrawerItem(
+                icon: FontAwesomeIcons.percent,
+                text: 'Promoções',
+                onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Promocaoes()),
                     )),
           ],
         ),
