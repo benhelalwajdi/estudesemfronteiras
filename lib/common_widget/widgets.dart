@@ -5,6 +5,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 /// A simple widget that builds different things on different platforms.
 class PlatformWidget extends StatelessWidget {
@@ -153,65 +154,212 @@ class HeroAnimatingCard extends StatelessWidget {
 
   @override
   Widget build(context) {
+    double width = MediaQuery.of(context).size.width * 1;
+    double height = MediaQuery.of(context).size.height * 0.08;
     // This is an inefficient usage of AnimatedBuilder since it's rebuilding
     // the entire subtree instead of passing in a non-changing child and
     // building a transition widget in between.
     //
     // Left simple in this demo because this card doesn't have any real inner
     // content so this just rebuilds everything while animating.
-    return AnimatedBuilder(
+    return Material(
+        type: MaterialType.transparency,
+        child:AnimatedBuilder(
       animation: heroAnimation,
       builder: (context, child) {
         return PressableCard(
-          onPressed: heroAnimation.value == 0 ? onPressed : null,
-          color: color,
-          flattenAnimation: heroAnimation,
-          child: SizedBox(
-            height: 250,
-            child: Stack(
-              alignment: Alignment.center,
+            onPressed: heroAnimation.value == 0 ? onPressed : null,
+            color: Colors.transparent,
+            flattenAnimation: heroAnimation,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // The song title banner slides off in the hero animation.
-                Positioned(
-                  bottom: -80 * heroAnimation.value,
-                  left: 0,
-                  right: 0,
+                Image.asset(
+                  "assets/images/imgCours.png",
+                  width: 360,
+                  height: 210,
+                ),
+                Container(
+                  width: width,
+                  height: 62,
                   child: Container(
-                    height: 80,
-                    color: Colors.black12,
-                    alignment: Alignment.centerLeft,
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    child: Text(
-                      cours,
-                      style: const TextStyle(
-                        fontSize: 21,
-                        fontWeight: FontWeight.w500,
+                    padding: const EdgeInsets.all(1.0),
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    height: MediaQuery.of(context).size.height * 0.1,
+                    child: new Column(children: <Widget>[
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          new Text(cours,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontFamily: 'Poppins-Regular',
+                              ),
+                              textAlign: TextAlign.center),
+                        ],
                       ),
-                    ),
+                    ]),
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.black87,
+                    boxShadow: [
+                      BoxShadow(color: Colors.transparent, blurRadius: 3),
+                    ],
                   ),
                 ),
-                // The play button grows in the hero animation.
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 45) *
-                      (1 - heroAnimation.value),
+                Container(
+                  width: width,
+                  height: 200,
                   child: Container(
-                    height: playButtonSize,
-                    width: playButtonSize,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.black12,
-                    ),
-                    alignment: Alignment.center,
-                    child: Icon(Icons.play_arrow,
-                        size: playButtonSize, color: Colors.black38),
+                    padding: const EdgeInsets.all(1.0),
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    height: MediaQuery.of(context).size.height * 0.1,
+                    child: new Column(children: <Widget>[
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            FontAwesomeIcons.rocket,
+                            color: Colors.grey,
+                            size: 10.0,
+                          ),
+                          SizedBox(width: 5,),
+                          Text('Inicio',
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 10,
+                                fontFamily: 'Poppins-Regular',
+                              ),
+                              textAlign: TextAlign.center),
+                          SizedBox(width: 5,),
+                          Text('Imediato!',
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 10,
+                                fontFamily: 'Poppins-Regular',
+                              ),
+                              textAlign: TextAlign.center),
+
+                          SizedBox(width: 5,),
+                          Text('|',
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 10,
+                                fontFamily: 'Poppins-Regular',
+                              ),
+                              textAlign: TextAlign.center),
+                          SizedBox(width: 5,),
+                          Icon(
+                            FontAwesomeIcons.globe,
+                            color: Colors.grey,
+                            size: 10.0,
+                          ),
+                          SizedBox(width: 5,),
+                          Text('100% Online',
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 10,
+                                fontFamily: 'Poppins-Regular',
+                              ),
+                              textAlign: TextAlign.center),
+                          Text('|',
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 10,
+                                fontFamily: 'Poppins-Regular',
+                              ),
+                              textAlign: TextAlign.center),
+                          SizedBox(width: 5,),
+                          Icon(
+                            FontAwesomeIcons.clock,
+                            color: Colors.grey,
+                            size: 10.0,
+                          ),
+                          SizedBox(width: 5,),
+                          Text('80 Horas',
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 10,
+                                fontFamily: 'Poppins-Regular',
+                              ),
+                              textAlign: TextAlign.center),
+                        ],
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            FontAwesomeIcons.certificate,
+                            color: Colors.grey,
+                            size: 10.0,
+                          ),
+                          SizedBox(width: 5,),
+                          Text('Nota Máxima no MEC',
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 10,
+                                fontFamily: 'Poppins-Regular',
+                              ),
+                              textAlign: TextAlign.center),
+                        ],
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            "assets/logos/logotipo_faculdade_metropolitana.png",
+                            width: 100,
+                            height: 50,
+                          ),
+                        ],
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text.rich(TextSpan(
+                            text: '',
+                            children: <TextSpan>[
+                              new TextSpan(
+                                text: '\$8.99',
+                                style: new TextStyle(
+                                  color: Colors.grey,
+                                  decoration: TextDecoration.lineThrough,
+                                  fontSize: 15,
+                                  fontFamily: 'Poppins-Regular',
+                                ),
+                              ),
+                              new TextSpan(
+                                text: ' \$3.99',
+                                style: new TextStyle(
+                                fontSize: 15,
+                                fontFamily: 'Poppins-Regular',
+                              ),
+                              ),
+                            ],
+                          ),
+                          )
+                        ],
+                      ),
+                    ]),
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(color: Colors.transparent, blurRadius: 3),
+                    ],
                   ),
                 ),
               ],
-            ),
-          ),
-        );
+            ));
       },
-    );
+    ));
   }
 }
 
@@ -219,8 +367,8 @@ class HeroAnimatingCard extends StatelessWidget {
 ///
 /// This is an example of a custom widget that an app developer might create for
 /// use on both iOS and Android as part of their brand's unique design.
-class SongPlaceholderTile extends StatelessWidget {
-  const SongPlaceholderTile({Key? key}) : super(key: key);
+class CoursPlaceholderTile extends StatelessWidget {
+  const CoursPlaceholderTile({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -230,45 +378,7 @@ class SongPlaceholderTile extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
         child: Row(
           children: [
-            Container(
-              color: Theme.of(context).textTheme.bodyText2!.color,
-              width: 130,
-            ),
-            const Padding(
-              padding: EdgeInsets.only(left: 12),
-            ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    height: 9,
-                    margin: const EdgeInsets.only(right: 60),
-                    color: Theme.of(context).textTheme.bodyText2!.color,
-                  ),
-                  Container(
-                    height: 9,
-                    margin: const EdgeInsets.only(right: 20, top: 8),
-                    color: Theme.of(context).textTheme.bodyText2!.color,
-                  ),
-                  Container(
-                    height: 9,
-                    margin: const EdgeInsets.only(right: 40, top: 8),
-                    color: Theme.of(context).textTheme.bodyText2!.color,
-                  ),
-                  Container(
-                    height: 9,
-                    margin: const EdgeInsets.only(right: 80, top: 8),
-                    color: Theme.of(context).textTheme.bodyText2!.color,
-                  ),
-                  Container(
-                    height: 9,
-                    margin: const EdgeInsets.only(right: 50, top: 8),
-                    color: Theme.of(context).textTheme.bodyText2!.color,
-                  ),
-                ],
-              ),
-            ),
+
           ],
         ),
       ),

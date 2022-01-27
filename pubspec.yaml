@@ -76,6 +76,9 @@ flutter:
      - assets/images/empty_shopping_cart_image.png
      - assets/images/empty_shopping_cart.png
      - assets/images/empty_wish_list.png
+     - assets/logos/fire.png
+     - assets/images/imgCours.png
+     - assets/logos/logotipo_faculdade_metropolitana.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 
@@ -108,7 +111,7 @@ flutter:
 
     - family: Poppins-Bold
       fonts:
-        - asset: assets/Poppins-Bold.ttf
+        - asset: assets/fonts/Poppins-Bold.ttf
 
     - family: Poppins-Medium
       fonts:
@@ -116,9 +119,23 @@ flutter:
     - family: Roboto-Light
       fonts:
         - asset: assets/Roboto-Light.ttf
+
     - family: Roboto
       fonts:
         - asset: assets/fonts/Roboto-Regular.ttf
         - asset: assets/fonts/Roboto-Bold.ttf
         - asset: assets/fonts/Roboto-Light.ttf
-  #   - family: Schyler
+
+    - family: Poppins-Regular
+      fonts:
+        - asset: assets/fonts/Poppins-Regular.ttf
+
+    - family: Poppins-Light
+      fonts:
+        - asset: assets/fonts/Poppins-Light.ttf
+
+    - family: Poppins-Black
+      fonts:
+        - asset: assets/fonts/Poppins-Black.ttf
+
+      #   - family: Schyler

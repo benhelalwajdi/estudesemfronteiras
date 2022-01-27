@@ -10,20 +10,22 @@ import 'package:flutter/material.dart';
 ///
 /// On Android, this page sits at the top of your app. On iOS, this page is on
 /// top of the songs tab's content but is below the tab bar itself.
-class SongDetailTab extends StatelessWidget {
-  const SongDetailTab({
+class CoursDetailTab extends StatelessWidget {
+  const CoursDetailTab({
     required this.id,
-    required this.song,
+    required this.cours,
     required this.color,
     Key? key,
   }) : super(key: key);
 
   final int id;
-  final String song;
+  final String cours;
   final Color color;
 
   Widget _buildBody() {
-    return SafeArea(
+    return Material(
+        type: MaterialType.transparency,
+        child:SafeArea(
       bottom: false,
       left: false,
       right: false,
@@ -33,7 +35,7 @@ class SongDetailTab extends StatelessWidget {
           Hero(
             tag: id,
             child: HeroAnimatingCard(
-              cours: song,
+              cours: cours,
               color: color,
               heroAnimation: const AlwaysStoppedAnimation(1),
             ),
@@ -44,7 +46,7 @@ class SongDetailTab extends StatelessWidget {
             flightShuttleBuilder: (context, animation, flightDirection,
                 fromHeroContext, toHeroContext) {
               return HeroAnimatingCard(
-                cours: song,
+                cours: cours,
                 color: color,
                 heroAnimation: animation,
               );
@@ -71,13 +73,13 @@ class SongDetailTab extends StatelessWidget {
                   );
                 }
                 // Just a bunch of boxes that simulates loading song choices.
-                return const SongPlaceholderTile();
+                return const CoursPlaceholderTile();
               },
             ),
           ),
         ],
       ),
-    );
+    ));
   }
 
   // ===========================================================================
@@ -86,7 +88,7 @@ class SongDetailTab extends StatelessWidget {
 
   Widget _buildAndroid(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(song)),
+      appBar: AppBar(title: Text(cours)),
       body: _buildBody(),
     );
   }
@@ -94,7 +96,7 @@ class SongDetailTab extends StatelessWidget {
   Widget _buildIos(BuildContext context) {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
-        middle: Text(song),
+        middle: Text(cours),
         previousPageTitle: 'Songs',
       ),
       child: _buildBody(),
