@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:estudesemfronteiras/Entity/courses.dart';
 import 'package:estudesemfronteiras/common_widget/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,7 @@ class CoursDetailTab extends StatelessWidget {
   }) : super(key: key);
 
   final int id;
-  final String cours;
+  final Courses cours;
   final Color color;
 
   Widget _buildBody() {
@@ -88,7 +89,7 @@ class CoursDetailTab extends StatelessWidget {
 
   Widget _buildAndroid(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(cours)),
+      appBar: AppBar(title: Text(cours.name)),
       body: _buildBody(),
     );
   }
@@ -96,7 +97,7 @@ class CoursDetailTab extends StatelessWidget {
   Widget _buildIos(BuildContext context) {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
-        middle: Text(cours),
+        middle: Text(cours.name),
         previousPageTitle: 'Songs',
       ),
       child: _buildBody(),

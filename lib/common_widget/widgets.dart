@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:estudesemfronteiras/Entity/courses.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -145,7 +146,7 @@ class HeroAnimatingCard extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  final String cours;
+  final Courses cours;
   final Color color;
   final Animation<double> heroAnimation;
   final VoidCallback? onPressed;
@@ -164,202 +165,208 @@ class HeroAnimatingCard extends StatelessWidget {
     // content so this just rebuilds everything while animating.
     return Material(
         type: MaterialType.transparency,
-        child:AnimatedBuilder(
-      animation: heroAnimation,
-      builder: (context, child) {
-        return PressableCard(
-            onPressed: heroAnimation.value == 0 ? onPressed : null,
-            color: Colors.transparent,
-            flattenAnimation: heroAnimation,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(
-                  "assets/images/imgCours.png",
-                  width: 360,
-                  height: 210,
-                ),
-                Container(
-                  width: width,
-                  height: 62,
-                  child: Container(
-                    padding: const EdgeInsets.all(1.0),
-                    width: MediaQuery.of(context).size.width * 0.8,
-                    height: MediaQuery.of(context).size.height * 0.1,
-                    child: new Column(children: <Widget>[
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          new Text(cours,
+        child: AnimatedBuilder(
+          animation: heroAnimation,
+          builder: (context, child) {
+            return PressableCard(
+                onPressed: heroAnimation.value == 0 ? onPressed : null,
+                color: Colors.transparent,
+                flattenAnimation: heroAnimation,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    imgWid(cours),
+                    Container(
+                      width: width,
+                      height: 62,
+                      child: Container(
+                        padding: const EdgeInsets.all(1.0),
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        height: MediaQuery.of(context).size.height * 0.1,
+                        child: new Column(children: <Widget>[
+                          Text(cours.name,
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 20,
                                 fontFamily: 'Poppins-Regular',
                               ),
                               textAlign: TextAlign.center),
+                          ]),
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.black87,
+                        boxShadow: [
+                          BoxShadow(color: Colors.transparent, blurRadius: 3),
                         ],
                       ),
-                    ]),
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.black87,
-                    boxShadow: [
-                      BoxShadow(color: Colors.transparent, blurRadius: 3),
-                    ],
-                  ),
-                ),
-                Container(
-                  width: width,
-                  height: 200,
-                  child: Container(
-                    padding: const EdgeInsets.all(1.0),
-                    width: MediaQuery.of(context).size.width * 0.8,
-                    height: MediaQuery.of(context).size.height * 0.1,
-                    child: new Column(children: <Widget>[
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            FontAwesomeIcons.rocket,
-                            color: Colors.grey,
-                            size: 10.0,
+                    ),
+                    Container(
+                      width: width,
+                      height: 200,
+                      child: Container(
+                        padding: const EdgeInsets.all(1.0),
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        height: MediaQuery.of(context).size.height * 0.1,
+                        child: new Column(children: <Widget>[
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                FontAwesomeIcons.rocket,
+                                color: Colors.grey,
+                                size: 10.0,
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text('Inicio',
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 10,
+                                    fontFamily: 'Poppins-Regular',
+                                  ),
+                                  textAlign: TextAlign.center),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text('Imediato!',
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 10,
+                                    fontFamily: 'Poppins-Regular',
+                                  ),
+                                  textAlign: TextAlign.center),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text('|',
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 10,
+                                    fontFamily: 'Poppins-Regular',
+                                  ),
+                                  textAlign: TextAlign.center),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Icon(
+                                FontAwesomeIcons.globe,
+                                color: Colors.grey,
+                                size: 10.0,
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text('100% Online',
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 10,
+                                    fontFamily: 'Poppins-Regular',
+                                  ),
+                                  textAlign: TextAlign.center),
+                              Text('|',
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 10,
+                                    fontFamily: 'Poppins-Regular',
+                                  ),
+                                  textAlign: TextAlign.center),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Icon(
+                                FontAwesomeIcons.clock,
+                                color: Colors.grey,
+                                size: 10.0,
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text('80 Horas',
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 10,
+                                    fontFamily: 'Poppins-Regular',
+                                  ),
+                                  textAlign: TextAlign.center),
+                            ],
                           ),
-                          SizedBox(width: 5,),
-                          Text('Inicio',
-                              style: TextStyle(
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                FontAwesomeIcons.certificate,
                                 color: Colors.grey,
-                                fontSize: 10,
-                                fontFamily: 'Poppins-Regular',
+                                size: 10.0,
                               ),
-                              textAlign: TextAlign.center),
-                          SizedBox(width: 5,),
-                          Text('Imediato!',
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 10,
-                                fontFamily: 'Poppins-Regular',
+                              SizedBox(
+                                width: 5,
                               ),
-                              textAlign: TextAlign.center),
-
-                          SizedBox(width: 5,),
-                          Text('|',
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 10,
-                                fontFamily: 'Poppins-Regular',
-                              ),
-                              textAlign: TextAlign.center),
-                          SizedBox(width: 5,),
-                          Icon(
-                            FontAwesomeIcons.globe,
-                            color: Colors.grey,
-                            size: 10.0,
+                              Text('Nota Máxima no MEC',
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 10,
+                                    fontFamily: 'Poppins-Regular',
+                                  ),
+                                  textAlign: TextAlign.center),
+                            ],
                           ),
-                          SizedBox(width: 5,),
-                          Text('100% Online',
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 10,
-                                fontFamily: 'Poppins-Regular',
-                              ),
-                              textAlign: TextAlign.center),
-                          Text('|',
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 10,
-                                fontFamily: 'Poppins-Regular',
-                              ),
-                              textAlign: TextAlign.center),
-                          SizedBox(width: 5,),
-                          Icon(
-                            FontAwesomeIcons.clock,
-                            color: Colors.grey,
-                            size: 10.0,
-                          ),
-                          SizedBox(width: 5,),
-                          Text('80 Horas',
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 10,
-                                fontFamily: 'Poppins-Regular',
-                              ),
-                              textAlign: TextAlign.center),
-                        ],
-                      ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            FontAwesomeIcons.certificate,
-                            color: Colors.grey,
-                            size: 10.0,
-                          ),
-                          SizedBox(width: 5,),
-                          Text('Nota Máxima no MEC',
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 10,
-                                fontFamily: 'Poppins-Regular',
-                              ),
-                              textAlign: TextAlign.center),
-                        ],
-                      ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            "assets/logos/logotipo_faculdade_metropolitana.png",
-                            width: 100,
-                            height: 50,
-                          ),
-                        ],
-                      ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text.rich(TextSpan(
-                            text: '',
-                            children: <TextSpan>[
-                              new TextSpan(
-                                text: '\$8.99',
-                                style: new TextStyle(
-                                  color: Colors.grey,
-                                  decoration: TextDecoration.lineThrough,
-                                  fontSize: 15,
-                                  fontFamily: 'Poppins-Regular',
-                                ),
-                              ),
-                              new TextSpan(
-                                text: ' \$3.99',
-                                style: new TextStyle(
-                                fontSize: 15,
-                                fontFamily: 'Poppins-Regular',
-                              ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                "assets/logos/logotipo_faculdade_metropolitana.png",
+                                width: 100,
+                                height: 50,
                               ),
                             ],
                           ),
-                          )
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text.rich(
+                                TextSpan(
+                                  text: '',
+                                  children: <TextSpan>[
+                                    new TextSpan(
+                                      text: '\$8.99',
+                                      style: new TextStyle(
+                                        color: Colors.grey,
+                                        decoration: TextDecoration.lineThrough,
+                                        fontSize: 15,
+                                        fontFamily: 'Poppins-Regular',
+                                      ),
+                                    ),
+                                    new TextSpan(
+                                      text: ' \$3.99',
+                                      style: new TextStyle(
+                                        fontSize: 15,
+                                        fontFamily: 'Poppins-Regular',
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ]),
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(color: Colors.transparent, blurRadius: 3),
                         ],
                       ),
-                    ]),
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(color: Colors.transparent, blurRadius: 3),
-                    ],
-                  ),
-                ),
-              ],
-            ));
-      },
-    ));
+                    ),
+                  ],
+                ));
+          },
+        ));
   }
 }
 
@@ -377,12 +384,24 @@ class CoursPlaceholderTile extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
         child: Row(
-          children: [
-
-          ],
+          children: [],
         ),
       ),
     );
+  }
+}
+
+Widget imgWid(Courses cours) {
+  if(cours.photo == 'null'){
+  return Image.asset(
+    'assets/images/imgCours.png',
+    width: 360,
+    height: 210,
+  );
+  }else{
+    return Image.network('https://www.estudesemfronteiras.com/novo/img/upload/${cours.course_id}/${cours.photo}',
+      width: 360,
+      height: 210,);
   }
 }
 

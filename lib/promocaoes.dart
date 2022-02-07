@@ -1,5 +1,8 @@
 import 'dart:async';
-
+import 'dart:convert';
+import 'package:estudesemfronteiras/Controller/ListController.dart';
+import 'package:estudesemfronteiras/Entity/courses.dart';
+import 'package:http/http.dart' as http;
 import 'package:estudesemfronteiras/common_widget/DrawerWidget.dart';
 import 'package:estudesemfronteiras/common_widget/utils.dart';
 import 'package:estudesemfronteiras/common_widget/widgets.dart';
@@ -9,6 +12,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
 import 'main.dart';
 
@@ -18,6 +22,22 @@ class Promocaoes extends StatefulWidget {
 }
 
 class _Promocaoes extends State<Promocaoes> {
+  Future<List<Courses>> fetchCourses(id) async {
+    var url = 'http://192.168.1.123:8765/courses?page='+id;
+    var body;
+    var json;
+    var parsed;
+    final response = await http.get(Uri.parse(url));
+    body = response.body;
+
+    json = jsonDecode(body);
+    //print(json["courses"].toString());
+    parsed = json["courses"].cast<Map<String, dynamic>>();
+    //print(parsed.toString());
+    return parsed.map<Courses>((json) => Courses.fromMap(json)).toList();
+  }
+
+  late Future<List<Courses>> futureCourses;
   static const _itemsLength = 3;
 
   final _androidRefreshKey = GlobalKey<RefreshIndicatorState>();
@@ -27,11 +47,12 @@ class _Promocaoes extends State<Promocaoes> {
 
   late Timer _timer;
   int _start = 10;
+
   void startTimer() {
-    const oneSec = const Duration(seconds:1);
+    const oneSec = const Duration(seconds: 1);
     _timer = new Timer.periodic(
       oneSec,
-          (Timer timer) {
+      (Timer timer) {
         if (_start == 0) {
           setState(() {
             timer.cancel();
@@ -44,167 +65,248 @@ class _Promocaoes extends State<Promocaoes> {
       },
     );
   }
+
   @override
   Widget build(context) {
-    return _buildAndroid(context);
+    return Scaffold(
+      body: ChangeNotifierProvider(
+        create: (context) => ListController(),
+        child: Consumer<ListController>(builder:
+        (BuildContext context, ListController controller, Widget? _){
+          switch (controller.dataState){
+            case DataState.Uninitialized:
+              Future((){
+                controller.fetchData();
+              });
+              return _ListViewWidget(controller.dataList, true);
+            case DataState.Initial_Fetching:
+              return Container();
+            case DataState.More_Fetching:
+            case DataState.Refreshing:
+              return _ListViewWidget(controller.dataList, true);
+            case DataState.Fetched:
+            case DataState.Error:
+            case DataState.No_More_Data:
+              return _ListViewWidget(controller.dataList, false);
+          }
+        }
+        ),
+      )
+    );
+    //return _buildView(context);
   }
+
   @override
-  initState(){
+  initState() {
+    super.initState();
+    futureCourses = fetchCourses(1);
     startTimer();
   }
+
   void _setData() {
     colors = getRandomColors(_itemsLength);
     songNames = getRandomNames(_itemsLength);
   }
+
   Future<void> _refreshData() {
+    futureCourses = fetchCourses(2);
+    print(futureCourses.asStream().toString());
+
     return Future.delayed(
       // This is just an arbitrary delay that simulates some network activity.
-      const Duration(seconds: 2),
-          () => setState(() => _setData()),
+      const Duration(seconds: 2), () => setState(() => _setData()),
     );
+
   }
-  Widget _buildAndroid(BuildContext context) {
-    double c_width = MediaQuery.of(context).size.width*0.8;
 
+  Widget _buildView(BuildContext context) {
+    double c_width = MediaQuery.of(context).size.width * 0.8;
 
-    return
-      Material(
+    return Material(
         type: MaterialType.transparency,
-        child:
-        Scaffold(
-        appBar: AppBar(
-          title: const Text("Promocaoes"),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.refresh),
-              onPressed: () async =>
-              await _androidRefreshKey.currentState!.show(),
-            ),
-          ],
-        ),
-        drawer: DrawerWidget(),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children:<Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(
-                  "assets/logos/fire.png",
-                  width: 80,
-                  height: 40,
-                ),
-                Text('Promoção',
-                    style: const TextStyle(
-                        color: Colors.redAccent,
-                        fontFamily: 'Poppins-Regular',
-                        fontWeight: FontWeight.w600,
-                        fontSize: 36.0
-                    )),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                    "Termina em",
-                    style: const TextStyle(
-                        color: Colors.redAccent,
-                        fontFamily: 'Poppins-Regular',
-                        fontWeight: FontWeight.w600,
-                        fontSize: 20.0
-                    )
-                ),
-                SizedBox(width: 10,),
-                Icon(
-                  FontAwesomeIcons.clock,
-                  color: Colors.redAccent,
-                  size: 20.0,
-                  semanticLabel: 'Text to announce in accessibility modes',
-                ),
-                SizedBox(width: 10,),
-                Text(
-                    "$_start",
-                    style: const TextStyle(
-                        color: Colors.redAccent,
-                        fontFamily: 'Poppins-Regular',
-                        fontWeight: FontWeight.w600,
-                        fontSize: 20.0
-                    )
+        child: Scaffold(
+            appBar: AppBar(
+              title: const Text("Promocaoes"),
+              actions: [
+                IconButton(
+                  icon: const Icon(Icons.refresh),
+                  onPressed: () async =>
+                      await _androidRefreshKey.currentState!.show(),
                 ),
               ],
             ),
-            Container (
-              padding: const EdgeInsets.all(16.0),
-              width: c_width,
-              child: new Column (
-                children: <Widget>[
-                  new Text ("Super 24 horas de Promoção!!! Todos os preços caíram!!! CORRA: a promoção termina 18h dessa terça-feira !!! ",
-                      textAlign: TextAlign.center),
-                ],
-              ),
-            ),
-            Flexible(
-                  child:Center(
-                      child:RefreshIndicator(
-                        key: _androidRefreshKey,
-                        onRefresh: _refreshData,
-                        child: ListView.builder(
-                          padding: const EdgeInsets.symmetric(vertical: 1),
-                          itemCount: _itemsLength,
-                          itemBuilder: _listBuilder,
+            drawer: DrawerWidget(),
+            body: FutureBuilder<List<Courses>>(
+                future: futureCourses,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              "assets/logos/fire.png",
+                              width: 80,
+                              height: 40,
+                            ),
+                            Text('Promoção',
+                                style: const TextStyle(
+                                    color: Colors.redAccent,
+                                    fontFamily: 'Poppins-Regular',
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 36.0)),
+                          ],
                         ),
-                      )
-                    )
-                  ),
-          ],
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("Termina em",
+                                style: const TextStyle(
+                                    color: Colors.redAccent,
+                                    fontFamily: 'Poppins-Regular',
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 20.0)),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Icon(
+                              FontAwesomeIcons.clock,
+                              color: Colors.redAccent,
+                              size: 20.0,
+                              semanticLabel:
+                                  'Text to announce in accessibility modes',
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text("$_start",
+                                style: const TextStyle(
+                                    color: Colors.redAccent,
+                                    fontFamily: 'Poppins-Regular',
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 20.0)),
+                          ],
+                        ),
+                        Container(
+                          padding: const EdgeInsets.all(16.0),
+                          width: c_width,
+                          child: new Column(
+                            children: <Widget>[
+                              new Text(
+                                  "Super 24 horas de Promoção!!! Todos os preços caíram!!! CORRA: a promoção termina 18h dessa terça-feira !!! ",
+                                  textAlign: TextAlign.center),
+                            ],
+                          ),
+                        ),
+                        Flexible(
+                            child: Center(
+                                child: RefreshIndicator(
+                          key: _androidRefreshKey,
+                          onRefresh: _refreshData,
+                          child: ListView.builder(
+                            padding: const EdgeInsets.symmetric(vertical: 1),
+                            itemCount: snapshot.data!.length,
+                            itemBuilder: (_, index) =>  SafeArea(
+                              top: false,
+                              bottom: false,
+                              child: Hero(
+                                tag: index,
+                                child: HeroAnimatingCard(
+                                  cours: snapshot.data![index],
+                                  color: Colors.blueAccent,
+                                  heroAnimation: const AlwaysStoppedAnimation(0),
+                                  onPressed: () => Navigator.of(context).push<void>(
+                                    MaterialPageRoute(
+                                      builder: (context) => CoursDetailTab(
+                                        id: index,
+                                        cours: snapshot.data![index],
+                                        color: Colors.blueAccent,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                            )
+                        ),
+                      ],
+                    );
+                  }
+                  return Container();
+                }
+                )
         )
-    ));
-  }
-  Widget _listBuilder(BuildContext context, int index) {
-    if (index >= _itemsLength) return Container();
-
-    // Show a slightly different color palette. Show poppy-ier colors on iOS
-    // due to lighter contrasting bars and tone it down on Android.
-
-    return SafeArea(
-      top: false,
-      bottom: false,
-      child: Hero(
-        tag: index,
-        child: HeroAnimatingCard(
-          cours: "coursNames[index]",
-          color: Colors.blueAccent,
-          heroAnimation: const AlwaysStoppedAnimation(0),
-          onPressed: () =>
-              Navigator.of(context).push<void>(
-                MaterialPageRoute(
-                  builder: (context) =>
-                      CoursDetailTab(
-                        id: index,
-                        cours: "coursNames[index]",
-                        color: Colors.blueAccent,
-                      ),
-                ),
-              ),
-        ),
-      ),
     );
-  }
-  void _togglePlatform() {
-    TargetPlatform _getOppositePlatform() {
-      if (defaultTargetPlatform == TargetPlatform.iOS) {
-        return TargetPlatform.android;
-      } else {
-        return TargetPlatform.iOS;
-      }
-    }
-
-    debugDefaultTargetPlatformOverride = _getOppositePlatform();
-    // This rebuilds the application. This should obviously never be
-    // done in a real app but it's done here since this app
-    // unrealistically toggles the current platform for demonstration
-    // purposes.
-    WidgetsBinding.instance!.reassembleApplication();
   }
 }
+
+
+class _ListViewWidget extends StatelessWidget {
+  final List<String> _data;
+  bool _isLoading;
+
+  _ListViewWidget(this._data, this._isLoading);
+
+  late DataState _dataState;
+  late BuildContext _buildContext;
+
+  @override
+  Widget build(BuildContext context) {
+    _dataState = Provider.of<ListController>(context, listen: false).dataState;
+    _buildContext = context;
+    return SafeArea(child: _scrollNotificationWidget());
+  }
+
+  Widget _scrollNotificationWidget() {
+    return Column(
+      children: [
+        Expanded(
+            child: NotificationListener<ScrollNotification>(
+                onNotification: _scrollNotification,
+                child: RefreshIndicator(
+                  onRefresh: () async {
+                    await _onRefresh();
+                  },
+                  child: ListView.builder(
+                    itemCount: _data.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Card(
+                              elevation: 2,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(_data[index],
+                                    style: TextStyle(fontSize: 15)),
+                              )));
+                    },
+                  ),
+                ))),
+        if (_dataState == DataState.More_Fetching)
+          Center(child: CircularProgressIndicator()),
+      ],
+    );
+  }
+
+  bool _scrollNotification(ScrollNotification scrollInfo) {
+    if (!_isLoading &&
+        scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent) {
+      _isLoading = true;
+      Provider.of<ListController>(_buildContext, listen: false).fetchData();
+    }
+    return true;
+  }
+
+  _onRefresh() async {
+    if (!_isLoading) {
+      _isLoading = true;
+      Provider.of<ListController>(_buildContext, listen: false)
+          .fetchData(isRefresh: true);
+    }
+  }
+}
+

@@ -2,6 +2,8 @@ import 'package:estudesemfronteiras/common_widget/BottomNavBarWidget.dart';
 import 'package:estudesemfronteiras/common_widget/DrawerWidget.dart';
 import 'package:estudesemfronteiras/main.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -10,6 +12,11 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageNewState extends State<MyHomePage> {
   final List<Widget> viewContainer = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +41,7 @@ class _MyHomePageNewState extends State<MyHomePage> {
         //bottomNavigationBar: BottomNavBarWidget(),
       ),
     );
+
   }
 }
 
