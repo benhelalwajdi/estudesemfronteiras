@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:estudesemfronteiras/Controller/ListController.dart';
 import 'package:estudesemfronteiras/Entity/courses.dart';
+import 'package:estudesemfronteiras/Service/APIManager.dart';
 import 'package:http/http.dart' as http;
 import 'package:estudesemfronteiras/common_widget/DrawerWidget.dart';
 import 'package:estudesemfronteiras/common_widget/utils.dart';
@@ -22,7 +23,7 @@ class Promocaoes extends StatefulWidget {
 }
 
 class _Promocaoes extends State<Promocaoes> {
-  Future<List<Courses>> fetchCourses(id) async {
+ /* Future<List<Courses>> fetchCourses(id) async {
     var url = 'http://192.168.1.123:8765/courses?page='+id;
     var body;
     var json;
@@ -36,14 +37,14 @@ class _Promocaoes extends State<Promocaoes> {
     //print(parsed.toString());
     return parsed.map<Courses>((json) => Courses.fromMap(json)).toList();
   }
-
+*/
   late Future<List<Courses>> futureCourses;
   static const _itemsLength = 3;
 
   final _androidRefreshKey = GlobalKey<RefreshIndicatorState>();
 
   late List<MaterialColor> colors = [];
-  late List<String> songNames = [];
+  late List<String> coursesNames = [];
 
   late Timer _timer;
   int _start = 10;
@@ -99,17 +100,17 @@ class _Promocaoes extends State<Promocaoes> {
   @override
   initState() {
     super.initState();
-    futureCourses = fetchCourses(1);
+    //futureCourses = APIManager.fetchCourses(1);
     startTimer();
   }
 
   void _setData() {
     colors = getRandomColors(_itemsLength);
-    songNames = getRandomNames(_itemsLength);
+    coursesNames = getRandomNames(_itemsLength);
   }
 
   Future<void> _refreshData() {
-    futureCourses = fetchCourses(2);
+    //futureCourses = fetchCourses(2);
     print(futureCourses.asStream().toString());
 
     return Future.delayed(

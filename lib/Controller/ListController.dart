@@ -1,4 +1,5 @@
 import 'dart:core';
+import 'package:estudesemfronteiras/Entity/courses.dart';
 import 'package:estudesemfronteiras/Service/APIManager.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -21,10 +22,11 @@ class ListController extends ChangeNotifier{
   DataState _dataState = DataState.Uninitialized ;
   bool get _didLastLoad => _currentPageNumber >= _totalPage;
   DataState get dataState => _dataState ;
-  List<String> _dataList = [];
-  List<String> get dataList => _dataList;
+  List<Courses> _dataList = [];
+  List<Courses> get dataList => _dataList;
 
   fetchData({bool isRefresh = false}) async{
+
     if(!isRefresh){
       _dataState = (_dataState == DataState.Uninitialized)
           ? DataState.Initial_Fetching
@@ -39,11 +41,14 @@ class ListController extends ChangeNotifier{
       if(_didLastLoad){
         _dataState = DataState.No_More_Data;
       }else{
-        List<String> list = await APIManager().fetchData(_currentPageNumber);
+
+        List<Courses> futureCourses = await APIManager.fetchCourses(1);
+
+        //List<String> list = await APIManager().fetchData(_currentPageNumber);
         if(_dataState == DataState.Refreshing){
           _dataList.clear();
         }
-        _dataList += list;
+        _dataList += futureCourses;
         _dataState = DataState.Fetched;
         _currentPageNumber += 1 ;
       }
