@@ -14,8 +14,8 @@ class APIManager{
     return _shared;
   }
 
-  static Future<List<Courses>> fetchCourses(id) async {
-    var url = Const.getCoursesById+id;
+  /*Future fetchCourses(id) async {
+    var url = Const.getCoursesById+id.toString();
     var body;
     var json;
     var parsed;
@@ -26,8 +26,23 @@ class APIManager{
     parsed = json["courses"].cast<Map<String, dynamic>>();
     //print(parsed.toString());
     return parsed.map<Courses>((json) => Courses.fromMap(json)).toList();
-  }
+  }*/
 
+  Future<List<Courses>> fetchCourses(id) async {
+    var url = 'http://192.168.1.123:8765/courses?page='+id.toString();
+    var body;
+    var json;
+    var parsed;
+    final response = await http.get(Uri.parse(url));
+    body = response.body;
+
+    json = jsonDecode(body);
+    //print(json["courses"].toString());
+    parsed = json["courses"].cast<Map<String, dynamic>>();
+    //print(parsed.toString());
+    return parsed.map<Courses>((json) => Courses.fromMap(json)).toList();
+  }
+/*
   Future fetchData(int currentPage) async{
     List<String> _list = [];
     int startIndex = currentPage * 10;
@@ -36,5 +51,5 @@ class APIManager{
     }
     return _list;
   }
-
+*/
 }

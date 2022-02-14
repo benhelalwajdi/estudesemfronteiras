@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:estudesemfronteiras/Controller/ListController.dart';
+import 'package:estudesemfronteiras/Controller/list_controller.dart';
 import 'package:estudesemfronteiras/Entity/courses.dart';
-import 'package:estudesemfronteiras/Service/APIManager.dart';
+import 'package:estudesemfronteiras/Service/api_manager.dart';
 import 'package:http/http.dart' as http;
 import 'package:estudesemfronteiras/common_widget/DrawerWidget.dart';
 import 'package:estudesemfronteiras/common_widget/utils.dart';
@@ -23,8 +23,8 @@ class Promocaoes extends StatefulWidget {
 }
 
 class _Promocaoes extends State<Promocaoes> {
- /* Future<List<Courses>> fetchCourses(id) async {
-    var url = 'http://192.168.1.123:8765/courses?page='+id;
+ Future<List<Courses>> fetchCourses(id) async {
+    var url = 'http://192.168.1.123:8765/courses?page='+id.toString();
     var body;
     var json;
     var parsed;
@@ -32,13 +32,13 @@ class _Promocaoes extends State<Promocaoes> {
     body = response.body;
 
     json = jsonDecode(body);
-    //print(json["courses"].toString());
+    print(json["courses"].toString());
     parsed = json["courses"].cast<Map<String, dynamic>>();
-    //print(parsed.toString());
+    print(parsed.toString());
     return parsed.map<Courses>((json) => Courses.fromMap(json)).toList();
   }
-*/
-  late Future<List<Courses>> futureCourses;
+
+  late Future<List<Courses>> futureCourses = fetchCourses(1);
   static const _itemsLength = 3;
 
   final _androidRefreshKey = GlobalKey<RefreshIndicatorState>();
@@ -69,38 +69,13 @@ class _Promocaoes extends State<Promocaoes> {
 
   @override
   Widget build(context) {
-    return Scaffold(
-      body: ChangeNotifierProvider(
-        create: (context) => ListController(),
-        child: Consumer<ListController>(builder:
-        (BuildContext context, ListController controller, Widget? _){
-          switch (controller.dataState){
-            case DataState.Uninitialized:
-              Future((){
-                controller.fetchData();
-              });
-              return _ListViewWidget(controller.dataList, true);
-            case DataState.Initial_Fetching:
-              return Container();
-            case DataState.More_Fetching:
-            case DataState.Refreshing:
-              return _ListViewWidget(controller.dataList, true);
-            case DataState.Fetched:
-            case DataState.Error:
-            case DataState.No_More_Data:
-              return _ListViewWidget(controller.dataList, false);
-          }
-        }
-        ),
-      )
-    );
-    //return _buildView(context);
+    return _buildView(context);
   }
 
   @override
   initState() {
     super.initState();
-    //futureCourses = APIManager.fetchCourses(1);
+    futureCourses = fetchCourses(1);
     startTimer();
   }
 
@@ -111,8 +86,6 @@ class _Promocaoes extends State<Promocaoes> {
 
   Future<void> _refreshData() {
     //futureCourses = fetchCourses(2);
-    print(futureCourses.asStream().toString());
-
     return Future.delayed(
       // This is just an arbitrary delay that simulates some network activity.
       const Duration(seconds: 2), () => setState(() => _setData()),
@@ -214,7 +187,8 @@ class _Promocaoes extends State<Promocaoes> {
                               bottom: false,
                               child: Hero(
                                 tag: index,
-                                child: HeroAnimatingCard(
+                                child:
+                                HeroAnimatingCard(
                                   cours: snapshot.data![index],
                                   color: Colors.blueAccent,
                                   heroAnimation: const AlwaysStoppedAnimation(0),
@@ -245,9 +219,9 @@ class _Promocaoes extends State<Promocaoes> {
   }
 }
 
-
+/*
 class _ListViewWidget extends StatelessWidget {
-  final List<String> _data;
+  final List<Courses> _data;
   bool _isLoading;
 
   _ListViewWidget(this._data, this._isLoading);
@@ -257,6 +231,7 @@ class _ListViewWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(_data);
     _dataState = Provider.of<ListController>(context, listen: false).dataState;
     _buildContext = context;
     return SafeArea(child: _scrollNotificationWidget());
@@ -281,14 +256,14 @@ class _ListViewWidget extends StatelessWidget {
                               elevation: 2,
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Text(_data[index],
-                                    style: TextStyle(fontSize: 15)),
+                                child: Text(_data[index].id.toString(),
+                                    style: const TextStyle(fontSize: 15)),
                               )));
                     },
                   ),
                 ))),
         if (_dataState == DataState.More_Fetching)
-          Center(child: CircularProgressIndicator()),
+          const Center(child: CircularProgressIndicator()),
       ],
     );
   }
@@ -310,4 +285,4 @@ class _ListViewWidget extends StatelessWidget {
     }
   }
 }
-
+*/

@@ -4,6 +4,8 @@ import 'package:estudesemfronteiras/main.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import 'Service/const.dart';
+
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -16,6 +18,7 @@ class _MyHomePageNewState extends State<MyHomePage> {
   @override
   void initState() {
     // TODO: implement initState
+    print(Const.getCoursesById+'1'.toString());
   }
 
   @override

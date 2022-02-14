@@ -184,9 +184,9 @@ class HeroAnimatingCard extends StatelessWidget {
                         padding: const EdgeInsets.all(1.0),
                         width: MediaQuery.of(context).size.width * 0.8,
                         height: MediaQuery.of(context).size.height * 0.1,
-                        child: new Column(children: <Widget>[
+                        child: Column(children: <Widget>[
                           Text(cours.name,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 20,
                                 fontFamily: 'Poppins-Regular',
@@ -194,7 +194,7 @@ class HeroAnimatingCard extends StatelessWidget {
                               textAlign: TextAlign.center),
                           ]),
                       ),
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: Colors.black87,
                         boxShadow: [
                           BoxShadow(color: Colors.transparent, blurRadius: 3),
@@ -208,11 +208,11 @@ class HeroAnimatingCard extends StatelessWidget {
                         padding: const EdgeInsets.all(1.0),
                         width: MediaQuery.of(context).size.width * 0.8,
                         height: MediaQuery.of(context).size.height * 0.1,
-                        child: new Column(children: <Widget>[
+                        child: Column(children: <Widget>[
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
+                            children: const [
                               Icon(
                                 FontAwesomeIcons.rocket,
                                 color: Colors.grey,
@@ -296,7 +296,7 @@ class HeroAnimatingCard extends StatelessWidget {
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
+                            children: const [
                               Icon(
                                 FontAwesomeIcons.certificate,
                                 color: Colors.grey,
@@ -328,23 +328,23 @@ class HeroAnimatingCard extends StatelessWidget {
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
+                            children: const [
                               Text.rich(
                                 TextSpan(
                                   text: '',
                                   children: <TextSpan>[
-                                    new TextSpan(
+                                    TextSpan(
                                       text: '\$8.99',
-                                      style: new TextStyle(
+                                      style: TextStyle(
                                         color: Colors.grey,
                                         decoration: TextDecoration.lineThrough,
                                         fontSize: 15,
                                         fontFamily: 'Poppins-Regular',
                                       ),
                                     ),
-                                    new TextSpan(
+                                    TextSpan(
                                       text: ' \$3.99',
-                                      style: new TextStyle(
+                                      style: TextStyle(
                                         fontSize: 15,
                                         fontFamily: 'Poppins-Regular',
                                       ),
@@ -356,7 +356,7 @@ class HeroAnimatingCard extends StatelessWidget {
                           ),
                         ]),
                       ),
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: Colors.white,
                         boxShadow: [
                           BoxShadow(color: Colors.transparent, blurRadius: 3),
