@@ -125,7 +125,7 @@ class Courses {
     themes: json['themes'],
     authors: json['authors'],
     target_public: json['target_public'],
-    methodology: json['methodolog'],
+    methodology: json['methodology'],
     workload: json['workload'],
     number_lessons: json['number_lessons'],
     orig_category: json['orig_category'],

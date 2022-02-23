@@ -1,21 +1,16 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:estudesemfronteiras/Controller/list_controller.dart';
 import 'package:estudesemfronteiras/Entity/courses.dart';
-import 'package:estudesemfronteiras/Service/api_manager.dart';
 import 'package:http/http.dart' as http;
 import 'package:estudesemfronteiras/common_widget/DrawerWidget.dart';
 import 'package:estudesemfronteiras/common_widget/utils.dart';
 import 'package:estudesemfronteiras/common_widget/widgets.dart';
 import 'package:estudesemfronteiras/cours_detail_tab.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
 
-import 'main.dart';
 
 class Promocaoes extends StatefulWidget {
   @override
@@ -32,9 +27,9 @@ class _Promocaoes extends State<Promocaoes> {
     body = response.body;
 
     json = jsonDecode(body);
-    print(json["courses"].toString());
+    //print(json["courses"].toString());
     parsed = json["courses"].cast<Map<String, dynamic>>();
-    print(parsed.toString());
+    print(parsed[0].toString());
     return parsed.map<Courses>((json) => Courses.fromMap(json)).toList();
   }
 
@@ -50,8 +45,8 @@ class _Promocaoes extends State<Promocaoes> {
   int _start = 10;
 
   void startTimer() {
-    const oneSec = const Duration(seconds: 1);
-    _timer = new Timer.periodic(
+    const oneSec = Duration(seconds: 1);
+    _timer = Timer.periodic(
       oneSec,
       (Timer timer) {
         if (_start == 0) {
@@ -125,8 +120,8 @@ class _Promocaoes extends State<Promocaoes> {
                               width: 80,
                               height: 40,
                             ),
-                            Text('Promoção',
-                                style: const TextStyle(
+                            const Text('Promoção',
+                                style: TextStyle(
                                     color: Colors.redAccent,
                                     fontFamily: 'Poppins-Regular',
                                     fontWeight: FontWeight.w600,
@@ -136,23 +131,23 @@ class _Promocaoes extends State<Promocaoes> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text("Termina em",
-                                style: const TextStyle(
+                            const Text("Termina em",
+                                style: TextStyle(
                                     color: Colors.redAccent,
                                     fontFamily: 'Poppins-Regular',
                                     fontWeight: FontWeight.w600,
                                     fontSize: 20.0)),
-                            SizedBox(
+                            const SizedBox(
                               width: 10,
                             ),
-                            Icon(
+                            const Icon(
                               FontAwesomeIcons.clock,
                               color: Colors.redAccent,
                               size: 20.0,
                               semanticLabel:
                                   'Text to announce in accessibility modes',
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 10,
                             ),
                             Text("$_start",
@@ -166,9 +161,9 @@ class _Promocaoes extends State<Promocaoes> {
                         Container(
                           padding: const EdgeInsets.all(16.0),
                           width: c_width,
-                          child: new Column(
+                          child: Column(
                             children: <Widget>[
-                              new Text(
+                              Text(
                                   "Super 24 horas de Promoção!!! Todos os preços caíram!!! CORRA: a promoção termina 18h dessa terça-feira !!! ",
                                   textAlign: TextAlign.center),
                             ],

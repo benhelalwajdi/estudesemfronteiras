@@ -1,5 +1,5 @@
 import 'package:estudesemfronteiras/about.dart';
-import 'package:estudesemfronteiras/MyHomePage.dart';
+import 'package:estudesemfronteiras/my_home_page.dart';
 import 'package:estudesemfronteiras/main.dart';
 import 'package:estudesemfronteiras/promocaoes.dart';
 import 'package:flutter/material.dart';

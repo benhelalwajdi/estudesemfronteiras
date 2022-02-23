@@ -155,7 +155,7 @@ class HeroAnimatingCard extends StatelessWidget {
 
   @override
   Widget build(context) {
-    double width = MediaQuery.of(context).size.width * 1;
+    double width = MediaQuery.of(context).size.width * 0.863;
     double height = MediaQuery.of(context).size.height * 0.08;
     // This is an inefficient usage of AnimatedBuilder since it's rebuilding
     // the entire subtree instead of passing in a non-changing child and
@@ -212,80 +212,80 @@ class HeroAnimatingCard extends StatelessWidget {
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              Icon(
+                            children:[
+                              const Icon(
                                 FontAwesomeIcons.rocket,
                                 color: Colors.grey,
                                 size: 10.0,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 5,
                               ),
-                              Text('Inicio',
+                              const Text('Inicio',
                                   style: TextStyle(
                                     color: Colors.grey,
                                     fontSize: 10,
                                     fontFamily: 'Poppins-Regular',
                                   ),
                                   textAlign: TextAlign.center),
-                              SizedBox(
+                              const SizedBox(
                                 width: 5,
                               ),
-                              Text('Imediato!',
+                              const Text('Imediato!',
                                   style: TextStyle(
                                     color: Colors.grey,
                                     fontSize: 10,
                                     fontFamily: 'Poppins-Regular',
                                   ),
                                   textAlign: TextAlign.center),
-                              SizedBox(
+                              const SizedBox(
                                 width: 5,
                               ),
-                              Text('|',
+                              const Text('|',
                                   style: TextStyle(
                                     color: Colors.grey,
                                     fontSize: 10,
                                     fontFamily: 'Poppins-Regular',
                                   ),
                                   textAlign: TextAlign.center),
-                              SizedBox(
+                              const SizedBox(
                                 width: 5,
                               ),
-                              Icon(
+                              const Icon(
                                 FontAwesomeIcons.globe,
                                 color: Colors.grey,
                                 size: 10.0,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 5,
                               ),
-                              Text('100% Online',
+                              const Text('100% Online',
                                   style: TextStyle(
                                     color: Colors.grey,
                                     fontSize: 10,
                                     fontFamily: 'Poppins-Regular',
                                   ),
                                   textAlign: TextAlign.center),
-                              Text('|',
+                              const Text('|',
                                   style: TextStyle(
                                     color: Colors.grey,
                                     fontSize: 10,
                                     fontFamily: 'Poppins-Regular',
                                   ),
                                   textAlign: TextAlign.center),
-                              SizedBox(
+                              const SizedBox(
                                 width: 5,
                               ),
-                              Icon(
+                              const Icon(
                                 FontAwesomeIcons.clock,
                                 color: Colors.grey,
                                 size: 10.0,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 5,
                               ),
-                              Text('80 Horas',
-                                  style: TextStyle(
+                              Text(cours.workload.toString()+' Horas',
+                                  style: const TextStyle(
                                     color: Colors.grey,
                                     fontSize: 10,
                                     fontFamily: 'Poppins-Regular',
@@ -326,16 +326,16 @@ class HeroAnimatingCard extends StatelessWidget {
                             ],
                           ),
                           Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children:[
                               Text.rich(
                                 TextSpan(
                                   text: '',
                                   children: <TextSpan>[
                                     TextSpan(
-                                      text: '\$8.99',
-                                      style: TextStyle(
+                                      text: 'R\$'+cours.orig_price.toString()+'  ',
+                                      style: const TextStyle(
                                         color: Colors.grey,
                                         decoration: TextDecoration.lineThrough,
                                         fontSize: 15,
@@ -343,14 +343,36 @@ class HeroAnimatingCard extends StatelessWidget {
                                       ),
                                     ),
                                     TextSpan(
-                                      text: ' \$3.99',
-                                      style: TextStyle(
+                                      text: 'R\$'+cours.price.toString(),
+                                      style: const TextStyle(
                                         fontSize: 15,
                                         fontFamily: 'Poppins-Regular',
                                       ),
                                     ),
                                   ],
                                 ),
+                              )
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              // Button to dispaly more details
+                              OutlinedButton.icon(
+                                onPressed: () {
+                                  /*TODO*/
+                                },
+                                icon: const Icon(Icons.shopping_cart, size: 18),
+                                label: const Text("Saiba mais"),
+                              ),
+                              // Button to pay
+                              OutlinedButton.icon(
+                                onPressed: () {
+                                  /*TODO*/
+                                },
+                                icon: const Icon(Icons.shopping_cart, size: 18),
+                                label: const Text("Comprar"),
                               )
                             ],
                           ),
@@ -395,13 +417,11 @@ Widget imgWid(Courses cours) {
   if(cours.photo == 'null'){
   return Image.asset(
     'assets/images/imgCours.png',
-    width: 360,
-    height: 210,
+    fit: BoxFit.fill,
   );
   }else{
     return Image.network('https://www.estudesemfronteiras.com/novo/img/upload/${cours.course_id}/${cours.photo}',
-      width: 360,
-      height: 210,);
+      fit: BoxFit.fill,);
   }
 }
 

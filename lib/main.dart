@@ -2,7 +2,7 @@ import 'package:estudesemfronteiras/about.dart';
 import 'package:estudesemfronteiras/common_widget/AppBarWidget.dart';
 import 'package:estudesemfronteiras/common_widget/BottomNavBarWidget.dart';
 import 'package:estudesemfronteiras/common_widget/DrawerWidget.dart';
-import 'package:estudesemfronteiras/MyHomePage.dart';
+import 'package:estudesemfronteiras/my_home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
