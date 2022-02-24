@@ -1,22 +1,20 @@
 import 'package:estudesemfronteiras/about.dart';
-import 'package:estudesemfronteiras/common_widget/AppBarWidget.dart';
-import 'package:estudesemfronteiras/common_widget/BottomNavBarWidget.dart';
-import 'package:estudesemfronteiras/common_widget/DrawerWidget.dart';
 import 'package:estudesemfronteiras/my_home_page.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
+import 'Signup.dart';
 import 'login.dart';
 
 
-void main() => runApp(MyApp(
+void main() => runApp(const MyApp(
 ));
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       routes: {
-        '/home': (context) => MyHomePage(),
+        '/home': (context) => const MyHomePage(),
         '/about': (context) => About(),
         '/extensao' : (context) => About(),
         '/posGraduacao' : (context) => About(),
@@ -24,8 +22,9 @@ class MyApp extends StatelessWidget {
         '/duvidas': (context) => About(),
         '/promocaoes' : (context) => About(),
         '/login' : (context)=> const LoginPage(),
+        '/signup': (context)=> const SignPage(),
       },
-      home: MyHomePage(),
+      home:const MyHomePage(),
       theme: ThemeData(
           fontFamily: 'Roboto',
           primaryColor: Colors.white,
