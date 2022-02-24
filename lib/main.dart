@@ -6,6 +6,8 @@ import 'package:estudesemfronteiras/my_home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import 'login.dart';
+
 
 void main() => runApp(MyApp(
 ));
@@ -21,6 +23,7 @@ class MyApp extends StatelessWidget {
         '/certificacao' : (context) => About(),
         '/duvidas': (context) => About(),
         '/promocaoes' : (context) => About(),
+        '/login' : (context)=> const LoginPage(),
       },
       home: MyHomePage(),
       theme: ThemeData(

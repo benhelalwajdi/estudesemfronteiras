@@ -59,6 +59,32 @@ class _MyHomePageNewState extends State<MyHomePage> {
               width: 80,
               height: 40,
             ),
+            actions: [
+              Row(
+                children: [
+
+                  GestureDetector(
+                    onTap: () {
+                      print("click on profile icon ");
+                      Navigator.pushNamed(
+                          context,
+                          '/login'
+                      );
+                    },
+                    child: const Icon(
+                      FontAwesomeIcons.user,
+                      color: Colors.white,
+                      size: 20.0,
+                      semanticLabel: 'profil',
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+
+                ],
+              )
+            ],
           ),
           drawer: DrawerWidget(),
           body: FutureBuilder<List<Courses>>(
@@ -540,16 +566,14 @@ class _MyHomePageNewState extends State<MyHomePage> {
                                     Flexible(
                                         child: Text(
                                             "O Estude Sem Fronteiras é o único Portal de Cursos de Extensão, "
-                                                "Aperfeiçoamento e Pós-Graduação 100% online cujo certificado é "
-                                                "emitido por Instituição de Ensino Superior credenciada pelo MEC "
-                                                "com Nota Máxima!",
+                                            "Aperfeiçoamento e Pós-Graduação 100% online cujo certificado é "
+                                            "emitido por Instituição de Ensino Superior credenciada pelo MEC "
+                                            "com Nota Máxima!",
                                             style: TextStyle(
                                                 color: Colors.blueGrey,
                                                 fontFamily: 'Poppins-Regular',
                                                 fontWeight: FontWeight.w300,
-                                                fontSize: 15.0)
-                                        )
-                                    )
+                                                fontSize: 15.0)))
                                   ],
                                 ),
                                 const Text("Po",
@@ -576,7 +600,8 @@ class _MyHomePageNewState extends State<MyHomePage> {
                                 ),
                               ]),
                         ]),
-                  );}
+                  );
+                }
                 return Container();
               }),
         ));

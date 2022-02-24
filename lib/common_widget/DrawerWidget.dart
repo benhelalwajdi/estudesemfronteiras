@@ -27,7 +27,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                             context,
                             '/home'
                           )
-
                     }),
             _createDrawerItem(
                 icon: FontAwesomeIcons.chartLine,
@@ -93,6 +92,7 @@ Widget _createDrawerHeader() {
             ),
           ),
         ),
+
       ]));
 }
 
