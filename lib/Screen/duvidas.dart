@@ -1,15 +1,13 @@
-import 'package:estudesemfronteiras/common_widget/DrawerWidget.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:estudesemfronteiras/common_widget/drawerWidget.dart';
+import 'package:estudesemfronteiras/Screen/main.dart';
 import 'package:flutter/material.dart';
 
-import 'main.dart';
-
-class About extends StatefulWidget{
+class Duvidas extends StatefulWidget{
   @override
-  _About createState()=> _About();
+  _Duvidas createState()=> _Duvidas();
 }
 
-class _About extends State<About>{
+class _Duvidas extends State<Duvidas>{
   final List<Widget> viewContainer = [
   ];
   @override

@@ -1,5 +1,5 @@
-import 'package:estudesemfronteiras/common_widget/DrawerWidget.dart';
-import 'package:estudesemfronteiras/main.dart';
+import 'package:estudesemfronteiras/common_widget/drawerWidget.dart';
+import 'package:estudesemfronteiras/Screen/main.dart';
 import 'package:flutter/material.dart';
 
 class Certificacao extends StatefulWidget{

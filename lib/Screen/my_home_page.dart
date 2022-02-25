@@ -1,15 +1,15 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
-import 'package:estudesemfronteiras/promocaoes.dart';
+import 'package:estudesemfronteiras/Screen/promocaoes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
-import 'package:estudesemfronteiras/common_widget/DrawerWidget.dart';
+import 'package:estudesemfronteiras/common_widget/drawerWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'Entity/courses.dart';
-import 'common_widget/widgets.dart';
+import '../Entity/courses.dart';
+import '../common_widget/widgets.dart';
 import 'cours_detail_tab.dart';
 import 'package:url_launcher/url_launcher.dart';
 

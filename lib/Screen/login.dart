@@ -136,6 +136,10 @@ Widget submitButton(context, TextEditingController userController,
 Widget createAccountLabel(context) {
   return InkWell(
     onTap: () {
+      Navigator.pushNamed(
+        context,
+        '/signup',
+      );
     },
     child: Container(
       margin: const EdgeInsets.symmetric(vertical: 20),

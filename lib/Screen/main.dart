@@ -1,7 +1,7 @@
-import 'package:estudesemfronteiras/about.dart';
-import 'package:estudesemfronteiras/my_home_page.dart';
+import 'package:estudesemfronteiras/Screen/about.dart';
+import 'package:estudesemfronteiras/Screen/my_home_page.dart';
 import 'package:flutter/material.dart';
-import 'Signup.dart';
+import 'signup.dart';
 import 'login.dart';
 
 
