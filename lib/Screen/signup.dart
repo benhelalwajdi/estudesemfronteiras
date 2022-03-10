@@ -150,7 +150,12 @@ Widget title() {
 Widget submitButton(context, TextEditingController userController,
     TextEditingController passwordController) {
   return InkWell(
-      onTap: () async {},
+      onTap: () async {
+        Navigator.pushNamed(
+          context,
+          '/dashboard',
+        );
+      },
       child: Container(
         width: MediaQuery.of(context).size.width,
         padding: const EdgeInsets.symmetric(vertical: 15),

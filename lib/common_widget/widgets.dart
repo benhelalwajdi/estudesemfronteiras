@@ -392,6 +392,263 @@ class HeroAnimatingCard extends StatelessWidget {
   }
 }
 
+
+class HeroAnimatingCardDash extends StatelessWidget {
+  const HeroAnimatingCardDash({
+    required this.cours,
+    required this.color,
+    required this.heroAnimation,
+    this.onPressed,
+    Key? key,
+  }) : super(key: key);
+
+  final Courses cours;
+  final Color color;
+  final Animation<double> heroAnimation;
+  final VoidCallback? onPressed;
+
+  double get playButtonSize => 50 + 50 * heroAnimation.value;
+
+  @override
+  Widget build(context) {
+    double width = MediaQuery.of(context).size.width * 0.863;
+    double height = MediaQuery.of(context).size.height * 0.08;
+    // This is an inefficient usage of AnimatedBuilder since it's rebuilding
+    // the entire subtree instead of passing in a non-changing child and
+    // building a transition widget in between.
+    //
+    // Left simple in this demo because this card doesn't have any real inner
+    // content so this just rebuilds everything while animating.
+    return Material(
+        type: MaterialType.transparency,
+        child: AnimatedBuilder(
+          animation: heroAnimation,
+          builder: (context, child) {
+            return PressableCard(
+                onPressed: heroAnimation.value == 0 ? onPressed : null,
+                color: Colors.transparent,
+                flattenAnimation: heroAnimation,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    imgWid(cours),
+                    Container(
+                      width: width,
+                      height: 62,
+                      child: Container(
+                        padding: const EdgeInsets.all(1.0),
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        height: MediaQuery.of(context).size.height * 0.1,
+                        child: Column(children: <Widget>[
+                          Text(cours.name,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontFamily: 'Poppins-Regular',
+                              ),
+                              textAlign: TextAlign.center),
+                        ]),
+                      ),
+                      decoration: const BoxDecoration(
+                        color: Colors.black87,
+                        boxShadow: [
+                          BoxShadow(color: Colors.transparent, blurRadius: 3),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      width: width,
+                      height: 200,
+                      child: Container(
+                        padding: const EdgeInsets.all(1.0),
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        height: MediaQuery.of(context).size.height * 0.1,
+                        child: Column(children: <Widget>[
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children:[
+                              const Icon(
+                                FontAwesomeIcons.rocket,
+                                color: Colors.grey,
+                                size: 10.0,
+                              ),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              const Text('Inicio',
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 10,
+                                    fontFamily: 'Poppins-Regular',
+                                  ),
+                                  textAlign: TextAlign.center),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              const Text('Imediato!',
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 10,
+                                    fontFamily: 'Poppins-Regular',
+                                  ),
+                                  textAlign: TextAlign.center),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              const Text('|',
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 10,
+                                    fontFamily: 'Poppins-Regular',
+                                  ),
+                                  textAlign: TextAlign.center),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              const Icon(
+                                FontAwesomeIcons.globe,
+                                color: Colors.grey,
+                                size: 10.0,
+                              ),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              const Text('100% Online',
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 10,
+                                    fontFamily: 'Poppins-Regular',
+                                  ),
+                                  textAlign: TextAlign.center),
+                              const Text('|',
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 10,
+                                    fontFamily: 'Poppins-Regular',
+                                  ),
+                                  textAlign: TextAlign.center),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              const Icon(
+                                FontAwesomeIcons.clock,
+                                color: Colors.grey,
+                                size: 10.0,
+                              ),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              Text(cours.workload.toString()+' Horas',
+                                  style: const TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 10,
+                                    fontFamily: 'Poppins-Regular',
+                                  ),
+                                  textAlign: TextAlign.center),
+                            ],
+                          ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Icon(
+                                FontAwesomeIcons.certificate,
+                                color: Colors.grey,
+                                size: 10.0,
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text('Nota Máxima no MEC',
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 10,
+                                    fontFamily: 'Poppins-Regular',
+                                  ),
+                                  textAlign: TextAlign.center),
+                            ],
+                          ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                "assets/logos/logotipo_faculdade_metropolitana.png",
+                                width: 100,
+                                height: 50,
+                              ),
+                            ],
+                          ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children:[
+                              Text.rich(
+                                TextSpan(
+                                  text: '',
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                      text: 'R\$'+cours.orig_price.toString()+'  ',
+                                      style: const TextStyle(
+                                        color: Colors.grey,
+                                        decoration: TextDecoration.lineThrough,
+                                        fontSize: 15,
+                                        fontFamily: 'Poppins-Regular',
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text: 'R\$'+cours.price.toString(),
+                                      style: const TextStyle(
+                                        fontSize: 15,
+                                        fontFamily: 'Poppins-Regular',
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              // Button to dispaly more details
+                              OutlinedButton.icon(
+                                onPressed: () {
+                                  /*TODO*/
+                                },
+                                icon: const Icon(Icons.shopping_cart, size: 18),
+                                label: const Text("Saiba mais"),
+                              ),
+                              // Button to pay
+                              OutlinedButton.icon(
+                                onPressed: () {
+                                  /*TODO*/
+                                },
+                                icon: const Icon(Icons.shopping_cart, size: 18),
+                                label: const Text("Comprar"),
+                              )
+                            ],
+                          ),
+                        ]),
+                      ),
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(color: Colors.transparent, blurRadius: 3),
+                        ],
+                      ),
+                    ),
+                  ],
+                ));
+          },
+        ));
+  }
+}
+
+
 /// A loading song tile's silhouette.
 ///
 /// This is an example of a custom widget that an app developer might create for
@@ -506,4 +763,7 @@ void showChoices(BuildContext context, List<String> choices) {
     default:
       assert(false, 'Unexpected platform $defaultTargetPlatform');
   }
+
+
+
 }
