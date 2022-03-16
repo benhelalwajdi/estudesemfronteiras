@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:estudesemfronteiras/Entity/category.dart';
+
 List<Courses> coursesFromJson(String str) =>
     List<Courses>.from(json.decode(str).map((x) => Courses.fromMap(x)));
 
@@ -51,6 +53,7 @@ class Courses {
   var livro_texto;
   var descricao_rodape;
   var prm_produto_id;
+  var category;
 
   Courses({
     required this.id,
@@ -100,6 +103,7 @@ class Courses {
     required this.livro_texto,
     required this.descricao_rodape,
     required this.prm_produto_id,
+    this.category,
   });
 
   factory Courses.fromMap(Map<String, dynamic> json) => Courses(
@@ -150,5 +154,6 @@ class Courses {
     livro_texto: json['livro_texto'],
     descricao_rodape: json['descricao_rodape'],
     prm_produto_id: json['prm_produto_id'],
-      );
+      category: json['category']
+  );
 }

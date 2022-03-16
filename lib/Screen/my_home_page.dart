@@ -733,6 +733,7 @@ class _MyHomePageNewState extends State<MyHomePage> {
     body = response.body;
     json = jsonDecode(body);
     parsed = json["courses"].cast<Map<String, dynamic>>();
+    print(json);
     return parsed.map<Courses>((json) => Courses.fromMap(json)).toList();
   }
 }

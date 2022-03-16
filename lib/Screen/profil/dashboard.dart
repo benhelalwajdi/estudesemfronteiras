@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:estudesemfronteiras/Entity/category.dart';
 import 'package:estudesemfronteiras/Entity/courses.dart';
+import 'package:estudesemfronteiras/Entity/purchase.dart';
 import 'package:estudesemfronteiras/common_widget/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:estudesemfronteiras/common_widget/utils.dart';
@@ -16,15 +17,15 @@ class Dashboard extends StatefulWidget {
 }
 
 class _Dashboard extends State<Dashboard> with SingleTickerProviderStateMixin {
-  List<TagModel> _tags = [];
+  List<Category> _category = [];
   TextEditingController _searchTextEditingController =
       new TextEditingController();
   refreshState(VoidCallback fn) {
     if (mounted) setState(fn);
   }
 
-  Future<List<Courses>> fetchCourses(id) async {
-    var url = 'http://192.168.1.123:8765/courses?page=' + id.toString();
+  Future<List<Purchase>> fetchCourses(id) async {
+    var url = 'http://192.168.1.123:8765/courses/myCourses/14115';
     var body;
     var json;
     var parsed;
@@ -32,13 +33,15 @@ class _Dashboard extends State<Dashboard> with SingleTickerProviderStateMixin {
     body = response.body;
 
     json = jsonDecode(body);
-    //print(json["courses"].toString());
+    print(json["courses"].toString());
     parsed = json["courses"].cast<Map<String, dynamic>>();
-    print(parsed[0].toString());
-    return parsed.map<Courses>((json) => Courses.fromMap(json)).toList();
+    //print(parsed[0]["course"].toString());
+    //return
+    print(parsed.map<Purchase>((json) => Purchase.fromMap(json)).toList());
+    return parsed.map<Purchase>((json) => Purchase.fromMap(json)).toList();
   }
 
-  late Future<List<Courses>> futureCourses = fetchCourses(1);
+  late Future<List<Purchase>> futureCourses = fetchCourses(1);
   static const _itemsLength = 3;
   final _androidRefreshKey = GlobalKey<RefreshIndicatorState>();
   late List<MaterialColor> colors = [];
@@ -74,14 +77,14 @@ class _Dashboard extends State<Dashboard> with SingleTickerProviderStateMixin {
     super.dispose();
     _searchTextEditingController.dispose();
   }
-
+/*
   _addTags(id, name) async {
-    _tags = [];
-    var tagModel = new TagModel(id: id, title: name);
-    if (!_tags.contains(tagModel)) {
-      _tags.add(tagModel);
+    _category = [];
+    var tagModel = new Category(id: id, name: name);
+    if (!_category.contains(tagModel)) {
+      _category.add(tagModel);
     }
-  }
+  }*/
 
   Widget _buildView(BuildContext context) {
     return Material(
@@ -98,7 +101,7 @@ class _Dashboard extends State<Dashboard> with SingleTickerProviderStateMixin {
               ],
             ),
             drawer: const DrawerDashWidget(),
-            body: FutureBuilder<List<Courses>>(
+            body: FutureBuilder<List<Purchase>>(
                 future: futureCourses,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
@@ -124,8 +127,8 @@ class _Dashboard extends State<Dashboard> with SingleTickerProviderStateMixin {
                 })));
   }
 
-  Widget cardElements(List<Courses>? cours, int index){
-    _addTags(cours![index].id.toString(), cours[index].name);
+  Widget cardElements(List<Purchase>? cours, int index){
+   // _addTags('cours![index].id.toString()', 'cours[index].name');
     return SafeArea(
         top: false,
         bottom: false,
@@ -135,10 +138,10 @@ class _Dashboard extends State<Dashboard> with SingleTickerProviderStateMixin {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 ListTile(
-                  leading: imgWid(cours[index]),
-                  title: Text(cours[index].name),
+                  //leading: imgWid(cours![index]),
+                  title: Text("test"),
                 ),
-                Row(
+                /*Row(
                   mainAxisAlignment:
                   MainAxisAlignment.end,
                   children: <Widget>[
@@ -148,12 +151,12 @@ class _Dashboard extends State<Dashboard> with SingleTickerProviderStateMixin {
                         CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          _tags.length > 0
+                          _category.length > 0
                               ? Column(children: [
                             Wrap(
                               alignment:
                               WrapAlignment.start,
-                              children: _tags
+                              children: _category
                                   .map(
                                       (tagModel) =>
                                       tagChip(
@@ -183,13 +186,13 @@ class _Dashboard extends State<Dashboard> with SingleTickerProviderStateMixin {
                     ),
                     const SizedBox(width: 8),
                   ],
-                ),
+                ),*/
               ],
             ),
           ),
         ));
   }
-
+/*
   Widget tagChip({tagModel,action,}) {
     return InkWell(
         child: Stack(
@@ -219,7 +222,7 @@ class _Dashboard extends State<Dashboard> with SingleTickerProviderStateMixin {
             ),
           ],
         ));
-  }
+  }*/
 }
 
 
