@@ -137,6 +137,7 @@ Widget submitButton(context, TextEditingController userController,
         ),
       ));
 }
+
 Widget createAccountLabel(context) {
   return InkWell(
     onTap: () {
@@ -167,6 +168,7 @@ Widget createAccountLabel(context) {
     ),
   );
 }
+
 Widget entryField(String title, TextEditingController controller,
     {bool isPassword = false}) {
   var hint = title;

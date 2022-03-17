@@ -98,6 +98,7 @@ class _MyHomePageNewState extends State<MyHomePage> {
                         children: [
                           Stack(children: <Widget>[
                             FittedBox(
+                              alignment: Alignment.center,
                               child: Container(
                                   decoration: const BoxDecoration(
                                     color: Colors.blue,

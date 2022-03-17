@@ -1,9 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:estudesemfronteiras/Entity/category.dart';
-import 'package:estudesemfronteiras/Entity/courses.dart';
 import 'package:estudesemfronteiras/Entity/purchase.dart';
-import 'package:estudesemfronteiras/common_widget/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:estudesemfronteiras/common_widget/utils.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,14 +9,14 @@ import 'package:flutter/rendering.dart';
 import 'common_widget/drawerDashWidget.dart';
 
 class Dashboard extends StatefulWidget {
+  const Dashboard({Key? key}) : super(key: key);
+
   @override
   _Dashboard createState() => _Dashboard();
 }
 
 class _Dashboard extends State<Dashboard> with SingleTickerProviderStateMixin {
-  List<Category> _category = [];
-  TextEditingController _searchTextEditingController =
-      new TextEditingController();
+  final TextEditingController _searchTextEditingController = TextEditingController();
   refreshState(VoidCallback fn) {
     if (mounted) setState(fn);
   }
@@ -77,14 +74,6 @@ class _Dashboard extends State<Dashboard> with SingleTickerProviderStateMixin {
     super.dispose();
     _searchTextEditingController.dispose();
   }
-/*
-  _addTags(id, name) async {
-    _category = [];
-    var tagModel = new Category(id: id, name: name);
-    if (!_category.contains(tagModel)) {
-      _category.add(tagModel);
-    }
-  }*/
 
   Widget _buildView(BuildContext context) {
     return Material(
@@ -136,7 +125,7 @@ class _Dashboard extends State<Dashboard> with SingleTickerProviderStateMixin {
           child: Card(
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
+              children: const <Widget>[
                 ListTile(
                   //leading: imgWid(cours![index]),
                   title: Text("test"),
