@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:estudesemfronteiras/Entity/courses.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -192,7 +194,7 @@ class HeroAnimatingCard extends StatelessWidget {
                                 fontFamily: 'Poppins-Regular',
                               ),
                               textAlign: TextAlign.center),
-                          ]),
+                        ]),
                       ),
                       decoration: const BoxDecoration(
                         color: Colors.black87,
@@ -212,7 +214,7 @@ class HeroAnimatingCard extends StatelessWidget {
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children:[
+                            children: [
                               const Icon(
                                 FontAwesomeIcons.rocket,
                                 color: Colors.grey,
@@ -284,7 +286,7 @@ class HeroAnimatingCard extends StatelessWidget {
                               const SizedBox(
                                 width: 5,
                               ),
-                              Text(cours.workload.toString()+' Horas',
+                              Text(cours.workload.toString() + ' Horas',
                                   style: const TextStyle(
                                     color: Colors.grey,
                                     fontSize: 10,
@@ -328,13 +330,15 @@ class HeroAnimatingCard extends StatelessWidget {
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             mainAxisAlignment: MainAxisAlignment.end,
-                            children:[
+                            children: [
                               Text.rich(
                                 TextSpan(
                                   text: '',
                                   children: <TextSpan>[
                                     TextSpan(
-                                      text: 'R\$'+cours.orig_price.toString()+'  ',
+                                      text: 'R\$' +
+                                          cours.orig_price.toString() +
+                                          '  ',
                                       style: const TextStyle(
                                         color: Colors.grey,
                                         decoration: TextDecoration.lineThrough,
@@ -343,7 +347,7 @@ class HeroAnimatingCard extends StatelessWidget {
                                       ),
                                     ),
                                     TextSpan(
-                                      text: 'R\$'+cours.price.toString(),
+                                      text: 'R\$' + cours.price.toString(),
                                       style: const TextStyle(
                                         fontSize: 15,
                                         fontFamily: 'Poppins-Regular',
@@ -391,7 +395,6 @@ class HeroAnimatingCard extends StatelessWidget {
         ));
   }
 }
-
 
 class HeroAnimatingCardDash extends StatelessWidget {
   const HeroAnimatingCardDash({
@@ -468,7 +471,7 @@ class HeroAnimatingCardDash extends StatelessWidget {
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children:[
+                            children: [
                               const Icon(
                                 FontAwesomeIcons.rocket,
                                 color: Colors.grey,
@@ -540,7 +543,7 @@ class HeroAnimatingCardDash extends StatelessWidget {
                               const SizedBox(
                                 width: 5,
                               ),
-                              Text(cours.workload.toString()+' Horas',
+                              Text(cours.workload.toString() + ' Horas',
                                   style: const TextStyle(
                                     color: Colors.grey,
                                     fontSize: 10,
@@ -584,13 +587,15 @@ class HeroAnimatingCardDash extends StatelessWidget {
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             mainAxisAlignment: MainAxisAlignment.end,
-                            children:[
+                            children: [
                               Text.rich(
                                 TextSpan(
                                   text: '',
                                   children: <TextSpan>[
                                     TextSpan(
-                                      text: 'R\$'+cours.orig_price.toString()+'  ',
+                                      text: 'R\$' +
+                                          cours.orig_price.toString() +
+                                          '  ',
                                       style: const TextStyle(
                                         color: Colors.grey,
                                         decoration: TextDecoration.lineThrough,
@@ -599,7 +604,7 @@ class HeroAnimatingCardDash extends StatelessWidget {
                                       ),
                                     ),
                                     TextSpan(
-                                      text: 'R\$'+cours.price.toString(),
+                                      text: 'R\$' + cours.price.toString(),
                                       style: const TextStyle(
                                         fontSize: 15,
                                         fontFamily: 'Poppins-Regular',
@@ -648,7 +653,6 @@ class HeroAnimatingCardDash extends StatelessWidget {
   }
 }
 
-
 /// A loading song tile's silhouette.
 ///
 /// This is an example of a custom widget that an app developer might create for
@@ -671,14 +675,16 @@ class CoursPlaceholderTile extends StatelessWidget {
 }
 
 Widget imgWid(Courses cours) {
-  if(cours.photo == 'null'){
-  return Image.asset(
-    'assets/images/imgCours.png',
-    fit: BoxFit.fill,
-  );
-  }else{
-    return Image.network('https://www.estudesemfronteiras.com/novo/img/upload/${cours.course_id}/${cours.photo}',
-      fit: BoxFit.fill,);
+  if (cours.photo == 'null') {
+    return Image.asset(
+      'assets/images/imgCours.png',
+      fit: BoxFit.fill,
+    );
+  } else {
+    return Image.network(
+      'https://www.estudesemfronteiras.com/novo/img/upload/${cours.course_id}/${cours.photo}',
+      fit: BoxFit.fill,
+    );
   }
 }
 
@@ -763,7 +769,151 @@ void showChoices(BuildContext context, List<String> choices) {
     default:
       assert(false, 'Unexpected platform $defaultTargetPlatform');
   }
+}
 
+Widget submitButton(context, TextEditingController userController,
+    TextEditingController passwordController) {
+  print(passwordController.value.text.toString());
+  print(userController.value.text.toString());
 
+  return InkWell(
+      onTap: () async {
+        if ((passwordController.value.text.toString().isEmpty &&
+                userController.value.text.isEmpty) ||
+            (userController.value.text.isEmpty) ||
+            (passwordController.value.text.toString().isEmpty)) {
+          print(passwordController.value.text);
+          print(userController.value.text);
+        } else {
+          var url = "http://192.168.1.123:8765/users/login";
+          var body = jsonEncode({
+            "email": userController.text.toString(),
+            "password": passwordController.text.toString()
+          });
+          print("Body: " + body);
+          await Future.delayed(const Duration(seconds: 1), () => "1");
+          print("Body2: " + body);
+          await http
+              .post(Uri.parse('http://192.168.1.123:8765/users/login'),
+                  headers: {"Content-Type": "application/json"}, body: body)
+              .then((http.Response response) async {
+            print("Response status : ${response.statusCode}");
+            print("Response contentLength : ${response.contentLength}");
+            print("Response headers : ${response.headers}");
+            print("Response request :${response.request}");
+            print("Response body : ${response.body}");
+          });
+        }
 
+        /*Navigator.pushNamed(
+          context,
+          '/signup',
+        );
+        */
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        padding: const EdgeInsets.symmetric(vertical: 15),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+            borderRadius: const BorderRadius.all(Radius.circular(5)),
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                  color: Colors.grey.shade200,
+                  offset: const Offset(2, 4),
+                  blurRadius: 5,
+                  spreadRadius: 2)
+            ],
+            gradient: const LinearGradient(
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+                colors: [Colors.blueAccent, Colors.grey])),
+        child: const Text(
+          'Acessar',
+          style: TextStyle(fontSize: 20, color: Colors.white),
+        ),
+      ));
+}
+
+void _showDialog(context, titre, content, btnText) {
+  // flutter defined function
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      // return object of type Dialog
+      return AlertDialog(
+        title: new Text(titre),
+        content: new Text(content),
+        actions: <Widget>[
+          // usually buttons at the bottom of the dialog
+          new FlatButton(
+            child: new Text(btnText),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
+Widget createAccountLabel(context) {
+  return InkWell(
+    onTap: () {
+      Navigator.pushNamed(
+        context,
+        '/signup',
+      );
+    },
+    child: Container(
+      margin: const EdgeInsets.symmetric(vertical: 20),
+      padding: const EdgeInsets.all(15),
+      alignment: Alignment.bottomCenter,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const <Widget>[
+          SizedBox(
+            width: 10,
+          ),
+          Text(
+            'Cadastre',
+            style: TextStyle(
+                color: Colors.blue, fontSize: 13, fontWeight: FontWeight.w900),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+Widget entryField(String title, TextEditingController controller,
+    {bool isPassword = false}) {
+  var hint = title;
+  if (title == "Telephone") {
+    hint = "ex: 00 216 208 300 300";
+  }
+  return Container(
+    margin: const EdgeInsets.symmetric(vertical: 10),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          title,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        TextField(
+            controller: controller,
+            obscureText: isPassword,
+            decoration: InputDecoration(
+                hintText: hint,
+                border: InputBorder.none,
+                fillColor: const Color(0xfff3f3f4),
+                filled: true))
+      ],
+    ),
+  );
 }
