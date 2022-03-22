@@ -60,10 +60,7 @@ class _MyHomePageNewState extends State<MyHomePage> {
               height: 40,
             ),
             actions: [
-              Row(
-                children: [
-
-                  GestureDetector(
+              GestureDetector(
                     onTap: () {
                       print("click on profile icon ");
                       Navigator.pushNamed(
@@ -78,13 +75,7 @@ class _MyHomePageNewState extends State<MyHomePage> {
                       semanticLabel: 'profil',
                     ),
                   ),
-                  SizedBox(
-                    width: 10,
-                  ),
-
                 ],
-              )
-            ],
           ),
           drawer: DrawerWidget(),
           body: FutureBuilder<List<Courses>>(

@@ -782,26 +782,24 @@ Widget submitButton(context, TextEditingController userController,
                 userController.value.text.isEmpty) ||
             (userController.value.text.isEmpty) ||
             (passwordController.value.text.toString().isEmpty)) {
-          print(passwordController.value.text);
-          print(userController.value.text);
         } else {
           var url = "http://192.168.1.123:8765/users/login";
           var body = jsonEncode({
             "email": userController.text.toString(),
             "password": passwordController.text.toString()
           });
-          print("Body: " + body);
           await Future.delayed(const Duration(seconds: 1), () => "1");
-          print("Body2: " + body);
           await http
               .post(Uri.parse('http://192.168.1.123:8765/users/login'),
                   headers: {"Content-Type": "application/json"}, body: body)
               .then((http.Response response) async {
-            print("Response status : ${response.statusCode}");
-            print("Response contentLength : ${response.contentLength}");
-            print("Response headers : ${response.headers}");
-            print("Response request :${response.request}");
-            print("Response body : ${response.body}");
+            if (response.body.toString() == '[]') {
+              _showDialog(context, "Login", "E-mail ou senha está incorreto",
+                  "Confirmar");
+              print('is empty');
+            } else {
+              print('it s ok ');
+            }
           });
         }
 
@@ -840,21 +838,67 @@ void _showDialog(context, titre, content, btnText) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
-      // return object of type Dialog
-      return AlertDialog(
-        title: new Text(titre),
-        content: new Text(content),
-        actions: <Widget>[
-          // usually buttons at the bottom of the dialog
-          new FlatButton(
-            child: new Text(btnText),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
+      return Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16.0),
+        ),
+        elevation: 0.0,
+        backgroundColor: Colors.transparent,
+        child: dialogContent(context, titre, content, btnText),
       );
     },
+  );
+}
+
+
+Widget dialogContent(BuildContext context,  title, descriptions, btnText) {
+  return Stack(
+    children: <Widget>[
+      Container(
+        padding: EdgeInsets.only(left: 16.0,top: 66.0 +16.0, right: 16.0,bottom: 16.0
+        ),
+        margin: EdgeInsets.only(top: 66.0),
+        decoration: BoxDecoration(
+            shape: BoxShape.rectangle,
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16.0),
+            boxShadow: [
+              BoxShadow(color: Colors.black,offset: Offset(0,10),
+                  blurRadius: 10
+              ),
+            ]
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Text(title,style: TextStyle(fontSize: 22,fontWeight: FontWeight.w600),),
+            SizedBox(height: 15,),
+            Text(descriptions,style: TextStyle(fontSize: 14),textAlign: TextAlign.center,),
+            SizedBox(height: 22,),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: FlatButton(
+                  onPressed: (){
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(btnText,style: TextStyle(fontSize: 18),)),
+            ),
+          ],
+        ),
+      ),
+      Positioned(
+        left: 16.0,
+        right: 16.0,
+        child: CircleAvatar(
+          backgroundColor: Colors.white,
+          radius: 75.0,
+          child: ClipRRect(
+              borderRadius: BorderRadius.all(Radius.circular(66.0)),
+              child: Image.asset("assets/logos/header-logo_esf.png")
+          ),
+        ),
+      ),
+    ],
   );
 }
 
@@ -890,9 +934,6 @@ Widget createAccountLabel(context) {
 Widget entryField(String title, TextEditingController controller,
     {bool isPassword = false}) {
   var hint = title;
-  if (title == "Telephone") {
-    hint = "ex: 00 216 208 300 300";
-  }
   return Container(
     margin: const EdgeInsets.symmetric(vertical: 10),
     child: Column(
