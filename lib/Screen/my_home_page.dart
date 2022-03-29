@@ -7,6 +7,7 @@ import 'package:estudesemfronteiras/common_widget/drawerWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart' show FontAwesomeIcons;
+import 'package:shared_preferences/shared_preferences.dart';
 import '../Entity/courses.dart';
 import '../common_widget/widgets.dart';
 import 'cours_detail_tab.dart';
@@ -49,12 +50,21 @@ class _MyHomePageNewState extends State<MyHomePage> {
             ),
             actions: [
               GestureDetector(
-                    onTap: () {
+                    onTap: () async {
                       print("click on profile icon ");
-                      Navigator.pushNamed(
-                          context,
-                          '/login'
-                      );
+                      SharedPreferences _prefs = await SharedPreferences.getInstance();
+                      try{
+                        print(_prefs.get('token'));
+                        if( _prefs.get('token').toString() != null){Navigator.pushNamed(context, '/dashboard',);}
+                        else{
+                          Navigator.pushNamed(
+                              context,
+                              '/login'
+                          );
+                        }
+                      }catch(e){
+                        print('token error');
+                      }
                     },
                     child: const Icon(
                       FontAwesomeIcons.user,
