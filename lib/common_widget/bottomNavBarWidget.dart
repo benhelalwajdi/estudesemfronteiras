@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class BottomNavBarWidget extends StatefulWidget {
+  const BottomNavBarWidget({Key? key}) : super(key: key);
+
   @override
   _BottomNavBarWidgetState createState() => _BottomNavBarWidgetState();
 }

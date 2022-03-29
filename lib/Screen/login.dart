@@ -1,7 +1,10 @@
-import 'package:estudesemfronteiras/common_widget/BezierContainer.dart';
+import 'package:estudesemfronteiras/common_widget/bezierContainer.dart';
 import 'package:estudesemfronteiras/common_widget/widgets.dart';
 import 'package:flutter/material.dart';
-import 'dart:math';
+
+import 'package:shared_preferences/shared_preferences.dart';
+
+
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
@@ -11,6 +14,20 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  @override
+  Future<void> initState() async {
+    super.initState();
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    try{
+       _prefs.get('token');
+      if( _prefs.get('token').toString() == null)Navigator.pushNamed(context, '/dashboard',);
+    }catch(e){
+      print('token error');
+    }
+
+  }
+
+
   // ignore: non_constant_identifier_names
   final user_Controller = TextEditingController();
 

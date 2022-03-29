@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// A simple widget that builds different things on different platforms.
 class PlatformWidget extends StatelessWidget {
@@ -158,7 +159,6 @@ class HeroAnimatingCard extends StatelessWidget {
   @override
   Widget build(context) {
     double width = MediaQuery.of(context).size.width * 0.863;
-    double height = MediaQuery.of(context).size.height * 0.08;
     // This is an inefficient usage of AnimatedBuilder since it's rebuilding
     // the entire subtree instead of passing in a non-changing child and
     // building a transition widget in between.
@@ -415,7 +415,6 @@ class HeroAnimatingCardDash extends StatelessWidget {
   @override
   Widget build(context) {
     double width = MediaQuery.of(context).size.width * 0.863;
-    double height = MediaQuery.of(context).size.height * 0.08;
     // This is an inefficient usage of AnimatedBuilder since it's rebuilding
     // the entire subtree instead of passing in a non-changing child and
     // building a transition widget in between.
@@ -771,6 +770,22 @@ void showChoices(BuildContext context, List<String> choices) {
   }
 }
 
+void upDateSharedPreferences(context, String token, int id) async {
+  SharedPreferences _prefs = await SharedPreferences.getInstance();
+  try {
+    _prefs.setString('token', token);
+    _prefs.setInt('id', id);
+
+    print(_prefs.get('token').toString() + 'the token saved from user ');
+    Navigator.pushNamed(
+      context,
+      '/dashboard',
+    );
+  } catch (e) {
+    print(e);
+  }
+}
+
 Widget submitButton(context, TextEditingController userController,
     TextEditingController passwordController) {
   print(passwordController.value.text.toString());
@@ -778,17 +793,21 @@ Widget submitButton(context, TextEditingController userController,
 
   return InkWell(
       onTap: () async {
+        // test if the password and the email they are not empty or they are not wrong
         if ((passwordController.value.text.toString().isEmpty &&
                 userController.value.text.isEmpty) ||
             (userController.value.text.isEmpty) ||
             (passwordController.value.text.toString().isEmpty)) {
-        } else {
-          var url = "http://192.168.1.123:8765/users/login";
+          _showDialog(
+              context, "Login", "e-mail ou senha estavam vazios", "Confirmar");
+        }
+
+        // if the password they are valid send it to the server :
+        else {
           var body = jsonEncode({
             "email": userController.text.toString(),
             "password": passwordController.text.toString()
           });
-          await Future.delayed(const Duration(seconds: 1), () => "1");
           await http
               .post(Uri.parse('http://192.168.1.123:8765/users/login'),
                   headers: {"Content-Type": "application/json"}, body: body)
@@ -798,16 +817,15 @@ Widget submitButton(context, TextEditingController userController,
                   "Confirmar");
               print('is empty');
             } else {
-              print('it s ok ');
+              print('it s ok ${response.body.toString()}');
+              var json = jsonDecode(response.body.toString());
+              print(json['token']);
+              print(json['user']['id']);
+              upDateSharedPreferences(context, json['token'].toString(),
+                  int.parse(json['user']['id'].toString()));
             }
           });
         }
-
-        /*Navigator.pushNamed(
-          context,
-          '/signup',
-        );
-        */
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -850,38 +868,49 @@ void _showDialog(context, titre, content, btnText) {
   );
 }
 
-
-Widget dialogContent(BuildContext context,  title, descriptions, btnText) {
+Widget dialogContent(BuildContext context, title, descriptions, btnText) {
   return Stack(
     children: <Widget>[
       Container(
-        padding: EdgeInsets.only(left: 16.0,top: 66.0 +16.0, right: 16.0,bottom: 16.0
-        ),
+        padding: EdgeInsets.only(
+            left: 16.0, top: 66.0 + 16.0, right: 16.0, bottom: 16.0),
         margin: EdgeInsets.only(top: 66.0),
         decoration: BoxDecoration(
             shape: BoxShape.rectangle,
             color: Colors.white,
             borderRadius: BorderRadius.circular(16.0),
             boxShadow: [
-              BoxShadow(color: Colors.black,offset: Offset(0,10),
-                  blurRadius: 10
-              ),
-            ]
-        ),
+              BoxShadow(
+                  color: Colors.black, offset: Offset(0, 10), blurRadius: 10),
+            ]),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Text(title,style: TextStyle(fontSize: 22,fontWeight: FontWeight.w600),),
-            SizedBox(height: 15,),
-            Text(descriptions,style: TextStyle(fontSize: 14),textAlign: TextAlign.center,),
-            SizedBox(height: 22,),
+            Text(
+              title,
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Text(
+              descriptions,
+              style: TextStyle(fontSize: 14),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(
+              height: 22,
+            ),
             Align(
               alignment: Alignment.bottomRight,
-              child: FlatButton(
-                  onPressed: (){
+              child: TextButton(
+                  onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text(btnText,style: TextStyle(fontSize: 18),)),
+                  child: Text(
+                    btnText,
+                    style: TextStyle(fontSize: 18),
+                  )),
             ),
           ],
         ),
@@ -894,8 +923,7 @@ Widget dialogContent(BuildContext context,  title, descriptions, btnText) {
           radius: 75.0,
           child: ClipRRect(
               borderRadius: BorderRadius.all(Radius.circular(66.0)),
-              child: Image.asset("assets/logos/header-logo_esf.png")
-          ),
+              child: Image.asset("assets/logos/header-logo_esf.png")),
         ),
       ),
     ],
