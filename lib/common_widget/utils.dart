@@ -7,9 +7,7 @@ import 'dart:math';
 import 'package:english_words/english_words.dart';
 // ignore: implementation_imports
 import 'package:flutter/material.dart';
-
 // This file has a number of platform-agnostic non-Widget utility functions.
-
 const _myListOfRandomColors = [
   Colors.red,
   Colors.blue,
@@ -23,9 +21,7 @@ const _myListOfRandomColors = [
   Colors.pink,
   Colors.orange,
 ];
-
 final _random = Random();
-
 // Avoid customizing the word generator, which can be slow.
 // https://github.com/filiph/english_words/issues/9
 final wordPairIterator = generateWordPairs();
@@ -80,3 +76,4 @@ String capitalize(String word) {
 String capitalizePair(WordPair pair) {
   return '${capitalize(pair.first)} ${capitalize(pair.second)}';
 }
+

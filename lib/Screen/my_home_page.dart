@@ -1,13 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
 import 'package:estudesemfronteiras/Screen/promocaoes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:estudesemfronteiras/common_widget/drawerWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart' show FontAwesomeIcons;
 import '../Entity/courses.dart';
 import '../common_widget/widgets.dart';
 import 'cours_detail_tab.dart';
@@ -22,10 +21,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageNewState extends State<MyHomePage> {
   late Future<List<Courses>> futureCourses = fetchCourses(1);
-  final _androidRefreshKey = GlobalKey<RefreshIndicatorState>();
   final List<Widget> viewContainer = [];
-  late Timer _timer;
-  int _start = 10;
+  final int _start = 10;
 
   @override
   void initState() {
@@ -34,20 +31,11 @@ class _MyHomePageNewState extends State<MyHomePage> {
     startTimer();
   }
 
-  void _setData() {}
 
-  Future<void> _refreshData() {
-    //futureCourses = fetchCourses(2);
-    return Future.delayed(
-      // This is just an arbitrary delay that simulates some network activity.
-      const Duration(seconds: 2), () => setState(() => _setData()),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
     double cWidth = MediaQuery.of(context).size.width * 0.8;
-    int i = 10;
     return DefaultTabController(
         length: 3,
         child: Scaffold(
@@ -88,8 +76,8 @@ class _MyHomePageNewState extends State<MyHomePage> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Stack(children: <Widget>[
-                            FittedBox(
-                              alignment: Alignment.center,
+                            ConstrainedBox(
+                              constraints: const BoxConstraints(maxHeight: 310),
                               child: Container(
                                   decoration: const BoxDecoration(
                                     color: Colors.blue,
@@ -111,7 +99,6 @@ class _MyHomePageNewState extends State<MyHomePage> {
                                     },
                                     blendMode: BlendMode.srcATop,
                                   )),
-                              fit: BoxFit.fill,
                             ),
                             Column(
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -567,17 +554,18 @@ class _MyHomePageNewState extends State<MyHomePage> {
                                                 fontWeight: FontWeight.w300,
                                                 fontSize: 15.0)))
                                   ],
-                                ),
+                                ),/*
                                 const Text("Po",
                                     style: TextStyle(
                                         color: Colors.black,
                                         fontFamily: 'Poppins-Regular',
                                         fontWeight: FontWeight.w300,
-                                        fontSize: 20.0)),
+                                        fontSize: 20.0)),*/
                                 const SizedBox(height: 10),
                                 GestureDetector(
                                   onTap: _launchURL,
-                                  child: FittedBox(
+                                  child:ConstrainedBox(
+                                    constraints: BoxConstraints(maxHeight: 300),
                                     child: Container(
                                         decoration: const BoxDecoration(
                                           color: Colors.blue,
@@ -587,7 +575,6 @@ class _MyHomePageNewState extends State<MyHomePage> {
                                           width:
                                               MediaQuery.of(context).size.width,
                                         )),
-                                    fit: BoxFit.contain,
                                   ),
                                 ),
                               ]),
@@ -600,21 +587,6 @@ class _MyHomePageNewState extends State<MyHomePage> {
   }
 
   void startTimer() {
-    const oneSec = Duration(seconds: 1);
-    _timer = Timer.periodic(
-      oneSec,
-      (Timer timer) {
-        if (_start == 0) {
-          setState(() {
-            timer.cancel();
-          });
-        } else {
-          setState(() {
-            _start--;
-          });
-        }
-      },
-    );
   }
 
   // statistic information
@@ -721,7 +693,9 @@ class _MyHomePageNewState extends State<MyHomePage> {
     String body;
     var json;
     var parsed;
-    final response = await http.get(Uri.parse(url));
+    final response = await http.get(Uri.parse(url)/*, {
+      'Authorization': 'Bearer ${token}',
+    }*/);
     body = response.body;
     json = jsonDecode(body);
     parsed = json["courses"].cast<Map<String, dynamic>>();

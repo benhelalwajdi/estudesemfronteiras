@@ -1,7 +1,6 @@
-import 'package:estudesemfronteiras/common_widget/BezierContainer.dart';
+import 'package:estudesemfronteiras/common_widget/bezierContainer.dart';
 import 'package:estudesemfronteiras/common_widget/widgets.dart';
 import 'package:flutter/material.dart';
-import 'dart:math';
 
 class SignPage extends StatefulWidget {
   const SignPage({Key? key}) : super(key: key);
