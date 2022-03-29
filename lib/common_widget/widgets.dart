@@ -867,7 +867,6 @@ void _showDialog(context, titre, content, btnText) {
     },
   );
 }
-
 Widget dialogContent(BuildContext context, title, descriptions, btnText) {
   return Stack(
     children: <Widget>[
