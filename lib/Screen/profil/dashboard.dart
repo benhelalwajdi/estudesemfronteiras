@@ -6,7 +6,8 @@ import 'package:estudesemfronteiras/common_widget/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'common_widget/drawerDashWidget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'common_widget/drawer_dash_widget.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -23,17 +24,17 @@ class _Dashboard extends State<Dashboard> with SingleTickerProviderStateMixin {
 
   Future<List<Purchase>> fetchCourses(id) async {
     var url = 'http://192.168.1.123:8765/courses/myCourses/14115';
-    var body;
-    var json;
-    var parsed;
-    final response = await http.get(Uri.parse(url));
-    body = response.body;
-
-    json = jsonDecode(body);
+    SharedPreferences _pref =await SharedPreferences.getInstance();
+    var token = _pref.get('token');
+    final response = await http.get(Uri.parse(url),headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    });
+    var body = response.body;
+    var json = jsonDecode(body);
+    var parsed = json["courses"].cast<Map<String, dynamic>>();
     print(json["courses"].toString());
-    parsed = json["courses"].cast<Map<String, dynamic>>();
-    //print(parsed[0]["course"].toString());
-    //return
     print(parsed.map<Purchase>((json) => Purchase.fromMap(json)).toList());
     return parsed.map<Purchase>((json) => Purchase.fromMap(json)).toList();
   }

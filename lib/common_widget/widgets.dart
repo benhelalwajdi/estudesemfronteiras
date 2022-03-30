@@ -775,11 +775,10 @@ void upDateSharedPreferences(context, String token, int id) async {
   try {
     _prefs.setString('token', token);
     _prefs.setInt('id', id);
-
     print(_prefs.get('token').toString() + 'the token saved from user ');
-    Navigator.pushNamed(
+    Navigator.popAndPushNamed(
       context,
-      '/dashboard',
+      '/dashboard'
     );
   } catch (e) {
     print(e);
@@ -801,28 +800,30 @@ Widget submitButton(context, TextEditingController userController,
           _showDialog(
               context, "Login", "e-mail ou senha estavam vazios", "Confirmar");
         }
-
         // if the password they are valid send it to the server :
         else {
           var body = jsonEncode({
             "email": userController.text.toString(),
             "password": passwordController.text.toString()
           });
-          await http
-              .post(Uri.parse('http://192.168.1.123:8765/users/login'),
-                  headers: {"Content-Type": "application/json"}, body: body)
-              .then((http.Response response) async {
+          await http.post(
+              Uri.parse('http://192.168.1.123:8765/users/login'),
+              headers: {"Content-Type": "application/json"},
+              body: body
+          ).then((http.Response response) async {
             if (response.body.toString() == '[]') {
-              _showDialog(context, "Login", "E-mail ou senha está incorreto",
-                  "Confirmar");
+              _showDialog(context, "Login", "E-mail ou senha está incorreto", "Confirmar");
               print('is empty');
             } else {
               print('it s ok ${response.body.toString()}');
               var json = jsonDecode(response.body.toString());
               print(json['token']);
               print(json['user']['id']);
-              upDateSharedPreferences(context, json['token'].toString(),
-                  int.parse(json['user']['id'].toString()));
+              upDateSharedPreferences(
+                  context,
+                  json['token'].toString(),
+                  int.parse(json['user']['id'].toString())
+              );
             }
           });
         }
@@ -867,6 +868,7 @@ void _showDialog(context, titre, content, btnText) {
     },
   );
 }
+
 Widget dialogContent(BuildContext context, title, descriptions, btnText) {
   return Stack(
     children: <Widget>[

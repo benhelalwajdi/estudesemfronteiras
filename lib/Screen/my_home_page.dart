@@ -55,8 +55,8 @@ class _MyHomePageNewState extends State<MyHomePage> {
                       SharedPreferences _prefs = await SharedPreferences.getInstance();
                       try{
                         print(_prefs.get('token'));
-                        if( _prefs.get('token').toString() != null){Navigator.pushNamed(context, '/dashboard',);}
-                        else{
+                        if( _prefs.get('token') != null){Navigator.pushNamed(context, '/dashboard',);}
+                        else  if( _prefs.get('token') == null){
                           Navigator.pushNamed(
                               context,
                               '/login'
