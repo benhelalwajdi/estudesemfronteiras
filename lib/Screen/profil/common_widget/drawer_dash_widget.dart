@@ -1,7 +1,6 @@
-import 'package:estudesemfronteiras/Screen/my_home_page.dart';
-import 'package:estudesemfronteiras/Screen/promocaoes.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart' show FontAwesomeIcons;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DrawerDashWidget extends StatefulWidget {
   const DrawerDashWidget({Key? key}) : super(key: key);
@@ -123,6 +122,24 @@ class _DrawerDashWidgetState extends State<DrawerDashWidget> {
                   context,
                   '/blog',
                 )),
+
+            _createDrawerItem(
+              text: '',
+            ),
+
+            _createDrawerItem(
+                icon: FontAwesomeIcons.doorOpen,
+                text: 'Sair',
+                onTap: () async {
+                  SharedPreferences _prefs = await SharedPreferences.getInstance();
+                  _prefs.remove('id');
+                  _prefs.remove('token');
+                  Navigator.popAndPushNamed(
+                    context,
+                    '/home',
+                  );
+                }
+                ),
           ],
         ),
       ),

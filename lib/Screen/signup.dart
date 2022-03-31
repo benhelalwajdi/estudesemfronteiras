@@ -35,7 +35,14 @@ class _SignPageState extends State<SignPage> {
     'Outro',
   ];
 
+  var gender = [
+    'macho',
+    'fêmea',
+    'outro'
+  ];
   String dropdownvalue = 'Onde nos conheceu?';
+  String dropdownGendervalue = 'macho';
+
 
   Future<bool> _onWillPop() async {
     return true;
@@ -67,6 +74,20 @@ class _SignPageState extends State<SignPage> {
                       const SizedBox(height: 8),
                       widget(fullName_Controller, user_Controller, degitalCPF_Controller, degitalPhone_Controller, password_Controller),
                       const SizedBox(height: 05),
+
+                      SizedBox(
+                        width: 300.0,
+                        child: DropdownButton(
+                          value: gender[0],
+                          icon: const Icon(Icons.keyboard_arrow_down),
+                          items: gender.map((String ge) {
+                            return DropdownMenuItem(
+                              value: items,
+                              child: Text(ge),
+                            );
+                          }).toList(),
+                        ),
+                      ),
                       SizedBox(
                           width: 300.0,
                           child: DropdownButton(
@@ -129,11 +150,21 @@ Widget widget(
     ) {
   return Column(
     children: <Widget>[
-      entryField("Nome completo", fullNameController),
       entryField("E-mail", userController),
+      entryField("Senha", passwordController, isPassword: true),
+      entryField("Nome completo", fullNameController),
       entryField("Digite seu CPF", degitalCPFController),
       entryField("Digite seu celular", degitalPhoneController),
       entryField("Senha", passwordController, isPassword: true),
+      DropdownButton<String>(
+        items: <String>['A', 'B', 'C', 'D'].map((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+        onChanged: (_) {},
+      )
     ],
   );
 }
