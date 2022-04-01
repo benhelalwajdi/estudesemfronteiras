@@ -34,15 +34,10 @@ class _SignPageState extends State<SignPage> {
     'E-mail',
     'Outro',
   ];
-
-  var gender = [
-    'macho',
-    'fêmea',
-    'outro'
-  ];
+var datel;
+  var gender = ['macho', 'fêmea', 'outro'];
   String dropdownvalue = 'Onde nos conheceu?';
   String dropdownGendervalue = 'macho';
-
 
   Future<bool> _onWillPop() async {
     return true;
@@ -70,27 +65,66 @@ class _SignPageState extends State<SignPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       SizedBox(height: height * 0.1),
-                      title(),
+                      titleSignup(),
                       const SizedBox(height: 8),
-                      widget(fullName_Controller, user_Controller, degitalCPF_Controller, degitalPhone_Controller, password_Controller),
-                      const SizedBox(height: 05),
-
+                      widgetSignup(
+                          fullName_Controller,
+                          user_Controller,
+                          degitalCPF_Controller,
+                          degitalPhone_Controller,
+                          password_Controller),
+                      /*const SizedBox(height: 05),
+                      SizedBox(
+                          width: 300.0,
+                          child:
+                          DropdownButton<DateTime>(
+                              hint: Text('Escolha uma data'),
+                              items: [
+                                'abra o calendário'
+                              ].map((e) => DropdownMenuItem<DateTime>(child: Text(e))).toList(),
+                              onChanged: (value) {
+                                showDatePicker(
+                                    context: context,
+                                    initialDate: DateTime.now(),
+                                    firstDate: DateTime(2001),
+                                    lastDate: DateTime(2099));
+                                setState(() {
+                                  showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime(2001),
+                                      lastDate: DateTime(2099))
+                                      .then((date) {
+                                    setState(() {
+                                      print(datel.toString());
+                                      datel = date;
+                                    });
+                                  });
+                                });
+                              }
+                              )
+                      ),*/
+                      const SizedBox(height: 05,),
+                      SizedBox(
+                          width: 300.0,
+                          child: DropdownButton<String>(
+                            value: dropdownGendervalue,
+                            items: gender.map((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                dropdownGendervalue = value!;
+                              });
+                              print(value);
+                            },
+                          )),
                       SizedBox(
                         width: 300.0,
                         child: DropdownButton(
-                          value: gender[0],
-                          icon: const Icon(Icons.keyboard_arrow_down),
-                          items: gender.map((String ge) {
-                            return DropdownMenuItem(
-                              value: items,
-                              child: Text(ge),
-                            );
-                          }).toList(),
-                        ),
-                      ),
-                      SizedBox(
-                          width: 300.0,
-                          child: DropdownButton(
                           value: dropdownvalue,
                           icon: const Icon(Icons.keyboard_arrow_down),
                           items: items.map((String items) {
@@ -106,7 +140,15 @@ class _SignPageState extends State<SignPage> {
                           },
                         ),
                       ),
-                      submitButton(context, user_Controller, password_Controller),
+                      submitCreationButton(
+                          context,
+                          user_Controller,
+                          password_Controller,
+                          dropdownvalue,
+                          dropdownGendervalue,
+                          fullName_Controller,
+                          degitalCPF_Controller,
+                          degitalPhone_Controller),
                       /*Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -140,75 +182,3 @@ class _SignPageState extends State<SignPage> {
     );
   }
 }
-
-Widget widget(
-    TextEditingController fullNameController,
-    TextEditingController userController,
-    TextEditingController degitalCPFController,
-    TextEditingController degitalPhoneController,
-    TextEditingController passwordController
-    ) {
-  return Column(
-    children: <Widget>[
-      entryField("E-mail", userController),
-      entryField("Senha", passwordController, isPassword: true),
-      entryField("Nome completo", fullNameController),
-      entryField("Digite seu CPF", degitalCPFController),
-      entryField("Digite seu celular", degitalPhoneController),
-      entryField("Senha", passwordController, isPassword: true),
-      DropdownButton<String>(
-        items: <String>['A', 'B', 'C', 'D'].map((String value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text(value),
-          );
-        }).toList(),
-        onChanged: (_) {},
-      )
-    ],
-  );
-}
-
-Widget title() {
-  return Center(
-    child: Image.asset(
-      'assets/logos/header-logo_esf.png',
-      width: 130,
-      height: 130,
-    ),
-  );
-}
-
-Widget submitButton(context, TextEditingController userController,
-    TextEditingController passwordController) {
-  return InkWell(
-      onTap: () async {
-        Navigator.pushNamed(
-          context,
-          '/dashboard',
-        );
-      },
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        padding: const EdgeInsets.symmetric(vertical: 15),
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(Radius.circular(5)),
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                  color: Colors.grey.shade200,
-                  offset: const Offset(2, 4),
-                  blurRadius: 5,
-                  spreadRadius: 2)
-            ],
-            gradient: const LinearGradient(
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-                colors: [Colors.blueAccent, Colors.grey])),
-        child: const Text(
-          'Cadastrar',
-          style: TextStyle(fontSize: 20, color: Colors.white),
-        ),
-      ));
-}
-

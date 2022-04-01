@@ -703,9 +703,8 @@ class _MyHomePageNewState extends State<MyHomePage> {
     String body;
     var json;
     var parsed;
-    final response = await http.get(Uri.parse(url)/*, {
-      'Authorization': 'Bearer ${token}',
-    }*/);
+    final response = await http.get(Uri.parse(url)).timeout(const Duration(seconds: 2));
+    print('value status '+response.statusCode.toString());
     body = response.body;
     json = jsonDecode(body);
     parsed = json["courses"].cast<Map<String, dynamic>>();

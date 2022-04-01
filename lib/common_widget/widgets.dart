@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'dart:convert';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:estudesemfronteiras/Entity/courses.dart';
 import 'package:flutter/cupertino.dart';
@@ -776,10 +777,7 @@ void upDateSharedPreferences(context, String token, int id) async {
     _prefs.setString('token', token);
     _prefs.setInt('id', id);
     print(_prefs.get('token').toString() + 'the token saved from user ');
-    Navigator.popAndPushNamed(
-      context,
-      '/dashboard'
-    );
+    Navigator.popAndPushNamed(context, '/dashboard');
   } catch (e) {
     print(e);
   }
@@ -797,7 +795,7 @@ Widget submitButton(context, TextEditingController userController,
                 userController.value.text.isEmpty) ||
             (userController.value.text.isEmpty) ||
             (passwordController.value.text.toString().isEmpty)) {
-          _showDialog(
+          show_Dialog(
               context, "Login", "e-mail ou senha estavam vazios", "Confirmar");
         }
         // if the password they are valid send it to the server :
@@ -806,24 +804,21 @@ Widget submitButton(context, TextEditingController userController,
             "email": userController.text.toString(),
             "password": passwordController.text.toString()
           });
-          await http.post(
-              Uri.parse('http://192.168.1.123:8765/users/login'),
-              headers: {"Content-Type": "application/json"},
-              body: body
-          ).then((http.Response response) async {
+          await http
+              .post(Uri.parse('http://192.168.1.123:8765/users/login'),
+                  headers: {"Content-Type": "application/json"}, body: body)
+              .then((http.Response response) async {
             if (response.body.toString() == '[]') {
-              _showDialog(context, "Login", "E-mail ou senha está incorreto", "Confirmar");
+              show_Dialog(context, "Login", "E-mail ou senha está incorreto",
+                  "Confirmar");
               print('is empty');
             } else {
               print('it s ok ${response.body.toString()}');
               var json = jsonDecode(response.body.toString());
               print(json['token']);
               print(json['user']['id']);
-              upDateSharedPreferences(
-                  context,
-                  json['token'].toString(),
-                  int.parse(json['user']['id'].toString())
-              );
+              upDateSharedPreferences(context, json['token'].toString(),
+                  int.parse(json['user']['id'].toString()));
             }
           });
         }
@@ -852,7 +847,7 @@ Widget submitButton(context, TextEditingController userController,
       ));
 }
 
-void _showDialog(context, titre, content, btnText) {
+void show_Dialog(context, titre, content, btnText, [source]) {
   // flutter defined function
   showDialog(
     context: context,
@@ -863,13 +858,13 @@ void _showDialog(context, titre, content, btnText) {
         ),
         elevation: 0.0,
         backgroundColor: Colors.transparent,
-        child: dialogContent(context, titre, content, btnText),
+        child: dialogContent(context, titre, content, btnText, source),
       );
     },
   );
 }
 
-Widget dialogContent(BuildContext context, title, descriptions, btnText) {
+Widget dialogContent(BuildContext context, title, descriptions, btnText, [source]) {
   return Stack(
     children: <Widget>[
       Container(
@@ -906,8 +901,12 @@ Widget dialogContent(BuildContext context, title, descriptions, btnText) {
               alignment: Alignment.bottomRight,
               child: TextButton(
                   onPressed: () {
-                    Navigator.of(context).pop();
-                  },
+                    if(source == 'splash') {
+                      SystemNavigator.pop();
+                    }else{
+                      Navigator.of(context).pop();
+                    }
+                    },
                   child: Text(
                     btnText,
                     style: TextStyle(fontSize: 18),
@@ -986,4 +985,81 @@ Widget entryField(String title, TextEditingController controller,
       ],
     ),
   );
+}
+
+Widget widgetSignup(
+    TextEditingController fullNameController,
+    TextEditingController userController,
+    TextEditingController degitalCPFController,
+    TextEditingController degitalPhoneController,
+    TextEditingController passwordController) {
+  return Column(
+    children: <Widget>[
+      entryField("E-mail", userController),
+      entryField("Senha", passwordController, isPassword: true),
+      entryField("Nome completo", fullNameController),
+      entryField("Digite seu CPF", degitalCPFController),
+      entryField("Digite seu celular", degitalPhoneController),
+      entryField("Senha", passwordController, isPassword: true),
+    ],
+  );
+}
+
+Widget titleSignup() {
+  return Center(
+    child: Image.asset(
+      'assets/logos/header-logo_esf.png',
+      width: 130,
+      height: 130,
+    ),
+  );
+}
+
+Widget submitCreationButton(
+    context,
+    TextEditingController userController,
+    TextEditingController passwordController,
+    String dropdownvalue,
+    String dropdownGendervalue,
+    TextEditingController fullName_Controller,
+    TextEditingController degitalCPF_Controller,
+    TextEditingController degitalPhone_Controller) {
+
+  return InkWell(
+      onTap: () async {
+        print('user email : ${userController.value.text} ');
+        print('password : ${passwordController.value.text} ');
+        print('dropDown Value : ${dropdownvalue.toString()} ');
+        print('dropDown Gender : ${dropdownGendervalue.toString()} ');
+        print('full name : ${fullName_Controller.value.text} ');
+        print('cpf : ${degitalCPF_Controller.value.text} ');
+        print('phone : ${degitalPhone_Controller.value.text} ');
+
+        /*Navigator.pushNamed(
+          context,
+          '/dashboard',
+        );*/
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        padding: const EdgeInsets.symmetric(vertical: 15),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+            borderRadius: const BorderRadius.all(Radius.circular(5)),
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                  color: Colors.grey.shade200,
+                  offset: const Offset(2, 4),
+                  blurRadius: 5,
+                  spreadRadius: 2)
+            ],
+            gradient: const LinearGradient(
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+                colors: [Colors.blueAccent, Colors.grey])),
+        child: const Text(
+          'Cadastrar',
+          style: TextStyle(fontSize: 20, color: Colors.white),
+        ),
+      ));
 }
