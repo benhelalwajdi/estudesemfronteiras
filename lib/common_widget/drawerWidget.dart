@@ -12,7 +12,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: MediaQuery.of(context).size.width * 0.65,
+      width: MediaQuery.of(context).size.width * 0.75,
       child: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
