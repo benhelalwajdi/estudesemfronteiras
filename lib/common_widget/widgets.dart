@@ -961,7 +961,61 @@ Widget createAccountLabel(context) {
 
 Widget entryField(String title, TextEditingController controller,
     {bool isPassword = false}) {
+  bool _validate = false;
   var hint = title;
+  if(title == 'Digite seu CPF'){
+    print('it CPF');
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            title,
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          TextField(
+
+              onTap: (){
+                controller.text = controller.text.replaceAll('-', '');
+                if(controller.text.length <= 15){
+                  _validate = true;
+                }
+              },
+              onEditingComplete:(){
+                var cpf='';
+                print(controller.text);
+                //if(controller.text)
+                for(int i = 0 ; i< controller.text.length ; i++){
+                  cpf = cpf + controller.text[i];
+                  print(controller.text[i]);
+                  if((i==2)&&(controller.text[i]!='-')){
+                    cpf = cpf +'-';
+                  }else if( i== 5 &&(controller.text[i]!='-')){
+                    cpf = cpf+ '-';
+                  }else if( i == 8 &&(controller.text[i]!='-')){
+                    cpf = cpf+ '-';
+                  }else if(i==10 &&(controller.text[i]!='-')){
+                    controller.text= cpf;
+                  }
+                }
+              },
+              controller: controller,
+              obscureText: isPassword,
+              decoration: InputDecoration(
+                  hintText: hint,
+                  errorText: _validate ? null : 'O CPF não pode ser menor que 11 números',
+                  border: InputBorder.none,
+                  fillColor: const Color(0xfff3f3f4),
+                  filled: true))
+        ],
+      ),
+    );
+  }
+  else{
   return Container(
     margin: const EdgeInsets.symmetric(vertical: 10),
     child: Column(
@@ -984,7 +1038,7 @@ Widget entryField(String title, TextEditingController controller,
                 filled: true))
       ],
     ),
-  );
+  );}
 }
 
 Widget widgetSignup(

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:estudesemfronteiras/Screen/promocaoes.dart';
+import 'package:estudesemfronteiras/Service/const.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:estudesemfronteiras/common_widget/drawerWidget.dart';
@@ -15,20 +16,17 @@ import 'package:url_launcher/url_launcher.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
-
   @override
   _MyHomePageNewState createState() => _MyHomePageNewState();
 }
 
 class _MyHomePageNewState extends State<MyHomePage> {
-  late Future<List<Courses>> futureCourses = fetchCourses(1);
   final List<Widget> viewContainer = [];
   final int _start = 10;
 
   @override
   void initState() {
     super.initState();
-    futureCourses = fetchCourses(3);
     startTimer();
   }
 
@@ -77,7 +75,7 @@ class _MyHomePageNewState extends State<MyHomePage> {
           ),
           drawer: DrawerWidget(),
           body: FutureBuilder<List<Courses>>(
-              future: futureCourses,
+              initialData: Const.futureCourses,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return SingleChildScrollView(
@@ -697,7 +695,7 @@ class _MyHomePageNewState extends State<MyHomePage> {
     if (!await launch('https://www.youtube.com/v/yvYkSsy-zRY'))
       throw 'Could not launch https://www.youtube.com/v/yvYkSsy-zRY';
   }
-
+/*
   Future<List<Courses>> fetchCourses(id) async {
     var url = 'http://192.168.1.123:8765/courses?page=' + id.toString();
     String body;
@@ -710,5 +708,5 @@ class _MyHomePageNewState extends State<MyHomePage> {
     parsed = json["courses"].cast<Map<String, dynamic>>();
     print(json);
     return parsed.map<Courses>((json) => Courses.fromMap(json)).toList();
-  }
+  }*/
 }

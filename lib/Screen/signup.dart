@@ -73,37 +73,6 @@ var datel;
                           degitalCPF_Controller,
                           degitalPhone_Controller,
                           password_Controller),
-                      /*const SizedBox(height: 05),
-                      SizedBox(
-                          width: 300.0,
-                          child:
-                          DropdownButton<DateTime>(
-                              hint: Text('Escolha uma data'),
-                              items: [
-                                'abra o calendário'
-                              ].map((e) => DropdownMenuItem<DateTime>(child: Text(e))).toList(),
-                              onChanged: (value) {
-                                showDatePicker(
-                                    context: context,
-                                    initialDate: DateTime.now(),
-                                    firstDate: DateTime(2001),
-                                    lastDate: DateTime(2099));
-                                setState(() {
-                                  showDatePicker(
-                                      context: context,
-                                      initialDate: DateTime.now(),
-                                      firstDate: DateTime(2001),
-                                      lastDate: DateTime(2099))
-                                      .then((date) {
-                                    setState(() {
-                                      print(datel.toString());
-                                      datel = date;
-                                    });
-                                  });
-                                });
-                              }
-                              )
-                      ),*/
                       const SizedBox(height: 05,),
                       SizedBox(
                           width: 300.0,
@@ -149,28 +118,6 @@ var datel;
                           fullName_Controller,
                           degitalCPF_Controller,
                           degitalPhone_Controller),
-                      /*Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(vertical: 00),
-                              alignment: Alignment.centerRight,
-                              child: const Text('Esqueceu sua senha?',
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w900)),
-                            ),
-                            GestureDetector(
-                              child: const Text('Clique aqui.',
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w900)),
-                            ),
-                          ]),
-                          createAccountLabel(context),
-                        ],
-                      ),*/
                     ],
                   ),
                 ),
