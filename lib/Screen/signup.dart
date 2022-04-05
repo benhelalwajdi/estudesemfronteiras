@@ -1,7 +1,11 @@
+import 'dart:core';
+
 import 'package:estudesemfronteiras/common_widget/bezierContainer.dart';
 import 'package:estudesemfronteiras/common_widget/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 
 class SignPage extends StatefulWidget {
   const SignPage({Key? key}) : super(key: key);
@@ -46,13 +50,29 @@ class _SignPageState extends State<SignPage> {
   bool _validateSenhaConf = false;
 
   bool _validate = false;
+  String zip_code =' ';
+  String city=' ';
+  String adress=' ';
+  String state=' ';
 
   Future<bool> _onWillPop() async {
     return true;
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+   determinePosition().then((value) {
+      print('the value $value');
+      getPlace(value);
+    });
+
+  }
+
+  @override
   Widget build(BuildContext context) {
+
     final height = MediaQuery.of(context).size.height;
     return WillPopScope(
       onWillPop: _onWillPop,
@@ -128,7 +148,12 @@ class _SignPageState extends State<SignPage> {
                           dropdownGendervalue,
                           fullName_Controller,
                           degitalCPF_Controller,
-                          degitalPhone_Controller),
+                          degitalPhone_Controller,
+                          zip_code,
+                          city,
+                          adress,
+                          state,
+                      ),
                     ],
                   ),
                 ),
@@ -407,5 +432,25 @@ class _SignPageState extends State<SignPage> {
         entryField("Digite seu celular", degitalPhoneController),
       ],
     );
+  }
+
+
+  String _address = ""; // create this variable
+
+  getPlace(_position) async {
+    List<Placemark> newPlace = await placemarkFromCoordinates(_position.latitude, _position.longitude).timeout(Duration(seconds: 2));
+
+    // this is all you need
+    Placemark placeMark  = newPlace[0];
+    this.adress = placeMark.name!;
+    adress = adress+ ' ' + placeMark.subLocality!;
+    this.city  = placeMark.subAdministrativeArea!;
+    this.state = placeMark.administrativeArea!;
+    this.zip_code = placeMark.postalCode!;
+    String? country = placeMark.country;
+    String address = "${adress}, ${this.city}, ${this.zip_code} ${state}, ${country}";
+
+    print(address);
+    return placeMark;
   }
 }
