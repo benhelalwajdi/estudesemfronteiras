@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'dart:convert';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:estudesemfronteiras/Entity/courses.dart';
@@ -959,10 +960,10 @@ Widget createAccountLabel(context) {
   );
 }
 
-Widget entryField(String title, TextEditingController controller,
-    {bool isPassword = false}) {
-  bool _validate = false;
+Widget entryField(String title, TextEditingController controller, {bool isPassword = false}) {
   var hint = title;
+  bool _validateCpf = false;
+  bool _validate = false;
   if(title == 'Digite seu CPF'){
     print('it CPF');
     return Container(
@@ -982,7 +983,7 @@ Widget entryField(String title, TextEditingController controller,
               onTap: (){
                 controller.text = controller.text.replaceAll('-', '');
                 if(controller.text.length <= 15){
-                  _validate = true;
+                  _validateCpf = true;
                 }
               },
               onEditingComplete:(){
@@ -1007,7 +1008,37 @@ Widget entryField(String title, TextEditingController controller,
               obscureText: isPassword,
               decoration: InputDecoration(
                   hintText: hint,
-                  errorText: _validate ? null : 'O CPF não pode ser menor que 11 números',
+                  errorText: _validateCpf ? null : 'O CPF não pode ser menor que 11 números',
+                  border: InputBorder.none,
+                  fillColor: const Color(0xfff3f3f4),
+                  filled: true))
+        ],
+      ),
+    );
+  }
+  else if(title  == 'E-mail'){
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            title,
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          TextField(
+              controller: controller,
+              obscureText: isPassword,
+              onEditingComplete:(){
+                print( EmailValidator.validate(controller.text));
+                _validate = EmailValidator.validate(controller.text);
+              },
+              decoration: InputDecoration(
+                  hintText: hint,
+                  errorText: _validate? '' :_validate.toString(),
                   border: InputBorder.none,
                   fillColor: const Color(0xfff3f3f4),
                   filled: true))
@@ -1041,24 +1072,6 @@ Widget entryField(String title, TextEditingController controller,
   );}
 }
 
-Widget widgetSignup(
-    TextEditingController fullNameController,
-    TextEditingController userController,
-    TextEditingController degitalCPFController,
-    TextEditingController degitalPhoneController,
-    TextEditingController passwordController) {
-  return Column(
-    children: <Widget>[
-      entryField("E-mail", userController),
-      entryField("Senha", passwordController, isPassword: true),
-      entryField("Nome completo", fullNameController),
-      entryField("Digite seu CPF", degitalCPFController),
-      entryField("Digite seu celular", degitalPhoneController),
-      entryField("Senha", passwordController, isPassword: true),
-    ],
-  );
-}
-
 Widget titleSignup() {
   return Center(
     child: Image.asset(
@@ -1088,6 +1101,13 @@ Widget submitCreationButton(
         print('full name : ${fullName_Controller.value.text} ');
         print('cpf : ${degitalCPF_Controller.value.text} ');
         print('phone : ${degitalPhone_Controller.value.text} ');
+        print('rg: rg');
+        print('organ_issuer');
+        print('birth_date');
+        print('zip_code');
+        print('city');
+        print('adress');
+        print('state');
 
         /*Navigator.pushNamed(
           context,

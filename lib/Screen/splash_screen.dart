@@ -22,6 +22,8 @@ class _SplashScreenState extends State<SplashScreen> {
     fetchCourses(1);
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,18 +40,28 @@ class _SplashScreenState extends State<SplashScreen> {
     String body;
     var json;
     var parsed;
-    //try {
-    await http.get(Uri.parse(url)).then((value) {
-      print(value.statusCode);
-      json = jsonDecode(value.body.toString());
-      parsed = json["courses"].cast<Map<String, dynamic>>();
-      Const.futureCourses = parsed.
+    try {
+      await http.get(Uri.parse(url)).then((value) {
+        print(value.statusCode);
+        json = jsonDecode(value.body.toString());
+        parsed = json["courses"].cast<Map<String, dynamic>>();
+        Const.futureCourses = parsed.
         map<Courses>((json) => Courses.fromMap(json)).
         toList();
-      print(Const.futureCourses.first.id.toString());
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (BuildContext context) =>
-              MyHomePage()));
-    });
+        print(Const.futureCourses.first.id.toString());
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (BuildContext context) =>
+                MyHomePage()));
+      });
+    }catch(e){
+      print('taw haka taw :$e');
+      show_Dialog(
+          context,
+          'erro de conexão',
+          'você tem erro de acesso à internet',
+          'Sim',
+          'splash' );
+
+    }
   }
 }
