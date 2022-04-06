@@ -5,6 +5,8 @@
 import 'dart:convert';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/services.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:estudesemfronteiras/Entity/courses.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,7 +14,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:intl/intl.dart';
 /// A simple widget that builds different things on different platforms.
 class PlatformWidget extends StatelessWidget {
   const PlatformWidget({
@@ -1090,10 +1092,18 @@ Widget submitCreationButton(
     String dropdownGendervalue,
     TextEditingController fullName_Controller,
     TextEditingController degitalCPF_Controller,
-    TextEditingController degitalPhone_Controller) {
+    TextEditingController degitalPhone_Controller,
+    String zip_code,
+    String city,
+    String adress,
+    String state,
+    ) {
 
   return InkWell(
       onTap: () async {
+
+        DateTime now = DateTime.now();
+
         print('user email : ${userController.value.text} ');
         print('password : ${passwordController.value.text} ');
         print('dropDown Value : ${dropdownvalue.toString()} ');
@@ -1101,18 +1111,38 @@ Widget submitCreationButton(
         print('full name : ${fullName_Controller.value.text} ');
         print('cpf : ${degitalCPF_Controller.value.text} ');
         print('phone : ${degitalPhone_Controller.value.text} ');
-        print('rg: rg');
-        print('organ_issuer');
-        print('birth_date');
-        print('zip_code');
-        print('city');
-        print('adress');
-        print('state');
+        print('rg: ${degitalCPF_Controller.value.text}');
+        print('organ_issuer $state',);
+        print('birth_date '+DateFormat('yyyy-MM-dd').format(now).toString());
+        print('zip_code $zip_code');
+        print('city $city');
+        print('adress $adress');
+        print('state $state');
 
-        /*Navigator.pushNamed(
+
+        var body = jsonEncode({
+          "email": userController.text.toString(),
+          "password": passwordController.text.toString(),
+          "rg": degitalCPF_Controller.text,
+          "organ_issuer": state,
+          "birth_date": DateFormat('yyyy-MM-dd').format(now).toString(),
+          "zip_code": zip_code,
+          "city": city,
+          "adress": adress,
+          "state": state,
+          "gender": dropdownGendervalue.toString(),
+          "onde_conheceu": dropdownvalue.toString(),
+        });
+        await http
+            .post(Uri.parse('http://192.168.1.123:8765/users/register'),
+            headers: {"Content-Type": "application/json"}, body: body).then((value){
+
+
+          /*Navigator.pushNamed(
           context,
           '/dashboard',
         );*/
+        });
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -1137,3 +1167,42 @@ Widget submitCreationButton(
         ),
       ));
 }
+
+
+Future<Position> determinePosition() async {
+  bool serviceEnabled;
+  LocationPermission permission;
+
+  // Test if location services are enabled.
+  serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  if (!serviceEnabled) {
+    // Location services are not enabled don't continue
+    // accessing the position and request users of the
+    // App to enable the location services.
+    return Future.error('Location services are disabled.');
+  }
+
+  permission = await Geolocator.checkPermission();
+  if (permission == LocationPermission.denied) {
+    permission = await Geolocator.requestPermission();
+    if (permission == LocationPermission.denied) {
+      // Permissions are denied, next time you could try
+      // requesting permissions again (this is also where
+      // Android's shouldShowRequestPermissionRationale
+      // returned true. According to Android guidelines
+      // your App should show an explanatory UI now.
+      return Future.error('Location permissions are denied');
+    }
+  }
+
+  if (permission == LocationPermission.deniedForever) {
+    // Permissions are denied forever, handle appropriately.
+    return Future.error(
+        'Location permissions are permanently denied, we cannot request permissions.');
+  }
+
+  // When we reach here, permissions are granted and we can
+  // continue accessing the position of the device.
+  return await Geolocator.getCurrentPosition();
+}
+
