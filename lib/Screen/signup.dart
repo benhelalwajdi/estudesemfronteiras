@@ -442,11 +442,14 @@ class _SignPageState extends State<SignPage> {
 
     // this is all you need
     Placemark placeMark  = newPlace[0];
-    this.adress = placeMark.name!;
+    setState(() {
+      this.adress = placeMark.name!;
+      this.city  = placeMark.subAdministrativeArea!;
+      this.state = placeMark.administrativeArea!;
+      this.zip_code = placeMark.postalCode!;
+
+    });
     adress = adress+ ' ' + placeMark.subLocality!;
-    this.city  = placeMark.subAdministrativeArea!;
-    this.state = placeMark.administrativeArea!;
-    this.zip_code = placeMark.postalCode!;
     String? country = placeMark.country;
     String address = "${adress}, ${this.city}, ${this.zip_code} ${state}, ${country}";
 

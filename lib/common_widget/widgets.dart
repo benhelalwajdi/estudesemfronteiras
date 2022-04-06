@@ -14,7 +14,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:intl/intl.dart';
 /// A simple widget that builds different things on different platforms.
 class PlatformWidget extends StatelessWidget {
   const PlatformWidget({
@@ -1101,6 +1101,9 @@ Widget submitCreationButton(
 
   return InkWell(
       onTap: () async {
+
+        DateTime now = DateTime.now();
+
         print('user email : ${userController.value.text} ');
         print('password : ${passwordController.value.text} ');
         print('dropDown Value : ${dropdownvalue.toString()} ');
@@ -1108,20 +1111,38 @@ Widget submitCreationButton(
         print('full name : ${fullName_Controller.value.text} ');
         print('cpf : ${degitalCPF_Controller.value.text} ');
         print('phone : ${degitalPhone_Controller.value.text} ');
-        print('rg: rg');
-        print('organ_issuer');
-        print('birth_date');
+        print('rg: ${degitalCPF_Controller.value.text}');
+        print('organ_issuer $state',);
+        print('birth_date '+DateFormat('yyyy-MM-dd').format(now).toString());
         print('zip_code $zip_code');
         print('city $city');
         print('adress $adress');
         print('state $state');
 
 
+        var body = jsonEncode({
+          "email": userController.text.toString(),
+          "password": passwordController.text.toString(),
+          "rg": degitalCPF_Controller.text,
+          "organ_issuer": state,
+          "birth_date": DateFormat('yyyy-MM-dd').format(now).toString(),
+          "zip_code": zip_code,
+          "city": city,
+          "adress": adress,
+          "state": state,
+          "gender": dropdownGendervalue.toString(),
+          "onde_conheceu": dropdownvalue.toString(),
+        });
+        await http
+            .post(Uri.parse('http://192.168.1.123:8765/users/register'),
+            headers: {"Content-Type": "application/json"}, body: body).then((value){
 
-        /*Navigator.pushNamed(
+
+          /*Navigator.pushNamed(
           context,
           '/dashboard',
         );*/
+        });
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
