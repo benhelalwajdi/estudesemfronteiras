@@ -2,6 +2,7 @@ import 'package:estudesemfronteiras/Screen/about.dart';
 import 'package:estudesemfronteiras/Screen/my_home_page.dart';
 import 'package:estudesemfronteiras/Screen/profil/dashboard.dart';
 import 'package:estudesemfronteiras/Screen/splash_screen.dart';
+import 'package:estudesemfronteiras/Screen/verify.dart';
 import 'package:flutter/material.dart';
 import 'signup.dart';
 import 'login.dart';
@@ -27,7 +28,8 @@ const MyApp({Key? key}) : super(key: key);
         '/promocaoes' : (context) => About(),
         '/login' : (context)=> const LoginPage(),
         '/signup': (context)=> const SignPage(),
-        '/dashboard': (context)=> Dashboard(),
+        '/dashboard': (context)=> const Dashboard(),
+        '/verify': (context)=> const VerifyPage()
       },
       home: SplashScreen(),
       theme: ThemeData(
