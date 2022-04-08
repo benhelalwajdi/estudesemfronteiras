@@ -3,7 +3,9 @@
 // found in the LICENSE file.
 
 import 'dart:convert';
+import 'dart:math';
 import 'package:email_validator/email_validator.dart';
+import 'package:estudesemfronteiras/Screen/verify.dart';
 import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -1102,6 +1104,13 @@ Widget submitCreationButton(
   return InkWell(
       onTap: () async {
 
+        Random rnd;
+        int min = 1000;
+        int max = 9999;
+        rnd = new Random();
+        var r = min + rnd.nextInt(max - min);
+        print("$r is in the range of $min and $max");
+
         DateTime now = DateTime.now();
 
         print('user email : ${userController.value.text} ');
@@ -1116,7 +1125,7 @@ Widget submitCreationButton(
         print('birth_date '+DateFormat('yyyy-MM-dd').format(now).toString());
         print('zip_code $zip_code');
         print('city $city');
-        print('adress $adress');
+        print('address $adress');
         print('state $state');
 
 
@@ -1128,20 +1137,21 @@ Widget submitCreationButton(
           "birth_date": DateFormat('yyyy-MM-dd').format(now).toString(),
           "zip_code": zip_code,
           "city": city,
-          "adress": adress,
+          "name": fullName_Controller.value.text,
+          "address": adress,
           "state": state,
           "gender": dropdownGendervalue.toString(),
           "onde_conheceu": dropdownvalue.toString(),
+          "validation": r.toString()
         });
         await http
             .post(Uri.parse('http://192.168.1.123:8765/users/register'),
             headers: {"Content-Type": "application/json"}, body: body).then((value){
 
-
-          /*Navigator.pushNamed(
-          context,
-          '/dashboard',
-        );*/
+              print(value.body);
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (BuildContext context) =>
+                      VerifyPage()));
         });
       },
       child: Container(
