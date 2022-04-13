@@ -90,6 +90,7 @@ flutter:
      - assets/logos/logotipo_faculdade_metropolitana.png
      - assets/images/1.png
      - assets/images/2.png
+     - assets/email.png
      - assets/images/bate-papo-antonio.jpg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

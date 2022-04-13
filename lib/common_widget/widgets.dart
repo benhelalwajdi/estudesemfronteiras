@@ -1130,24 +1130,26 @@ Widget submitCreationButton(
 
 
         var body = jsonEncode({
-          "email": userController.text.toString(),
-          "password": passwordController.text.toString(),
-          "rg": degitalCPF_Controller.text,
-          "organ_issuer": state,
-          "birth_date": DateFormat('yyyy-MM-dd').format(now).toString(),
-          "zip_code": zip_code,
-          "city": city,
-          "name": fullName_Controller.value.text,
-          "address": adress,
-          "state": state,
-          "gender": dropdownGendervalue.toString(),
-          "onde_conheceu": dropdownvalue.toString(),
+          "email": 'wajdi.benhelal@esprit.tn',//userController.text.toString(),
+          "password": '12345678',//passwordController.text.toString(),
+          "rg": '12345678',//degitalCPF_Controller.text,
+          "organ_issuer": 'dddd',//state,
+          "birth_date": '1234-02-02',//DateFormat('yyyy-MM-dd').format(now).toString(),
+          "zip_code": '12457',//zip_code,
+          "city": 'sp',//city,
+          "name": 'wajj',//fullName_Controller.value.text,
+          "address": 'ssd',//adress,
+          "state": 'sp',//state,
+          "gender": 'male',//dropdownGendervalue.toString(),
+          "onde_conheceu": 'dqaz',//dropdownvalue.toString(),
           "validation": r.toString()
         });
         await http
             .post(Uri.parse('http://192.168.1.123:8765/users/register'),
-            headers: {"Content-Type": "application/json"}, body: body).then((value){
-
+            headers: {"Content-Type": "application/json"}, body: body).then((value) async {
+              SharedPreferences _prefs = await SharedPreferences.getInstance();
+              var json = jsonDecode(value.body.toString());
+              _prefs.setStringList('validation', [json['user']['id'],r.toString()]);
               print(value.body);
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (BuildContext context) =>

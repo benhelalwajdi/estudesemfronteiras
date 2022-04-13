@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:estudesemfronteiras/Entity/courses.dart';
 import 'package:estudesemfronteiras/Entity/purchase.dart';
 import 'package:http/http.dart' as http;
 import 'package:estudesemfronteiras/common_widget/utils.dart';
@@ -17,16 +18,20 @@ class Dashboard extends StatefulWidget {
 }
 
 class _Dashboard extends State<Dashboard> with SingleTickerProviderStateMixin {
-  final TextEditingController _searchTextEditingController = TextEditingController();
+  var _category = [];
+  final TextEditingController _searchTextEditingController =
+      TextEditingController();
+
   refreshState(VoidCallback fn) {
     if (mounted) setState(fn);
   }
 
   Future<List<Purchase>> fetchCourses(id) async {
-    var url = 'http://192.168.1.123:8765/courses/myCourses/14115';
-    SharedPreferences _pref =await SharedPreferences.getInstance();
+    SharedPreferences _pref = await SharedPreferences.getInstance();
     var token = _pref.get('token');
-    final response = await http.get(Uri.parse(url),headers: {
+    var id = _pref.get('id');
+    var url = 'http://192.168.1.123:8765/courses/myCourses/' + id.toString();
+    final response = await http.get(Uri.parse(url), headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',
@@ -34,8 +39,8 @@ class _Dashboard extends State<Dashboard> with SingleTickerProviderStateMixin {
     var body = response.body;
     var json = jsonDecode(body);
     var parsed = json["courses"].cast<Map<String, dynamic>>();
-    print(json["courses"].toString());
-    print(parsed.map<Purchase>((json) => Purchase.fromMap(json)).toList());
+    // print(json["courses"].toString());
+    // print(parsed.map<Purchase>((json) => Purchase.fromMap(json)).toList());
     return parsed.map<Purchase>((json) => Purchase.fromMap(json)).toList();
   }
 
@@ -107,7 +112,7 @@ class _Dashboard extends State<Dashboard> with SingleTickerProviderStateMixin {
                             padding: const EdgeInsets.symmetric(vertical: 1),
                             itemCount: snapshot.data!.length,
                             itemBuilder: (_, index) =>
-                            cardElements(snapshot.data,index),
+                                cardElements(snapshot.data, index),
                           ),
                         ))),
                       ],
@@ -117,8 +122,10 @@ class _Dashboard extends State<Dashboard> with SingleTickerProviderStateMixin {
                 })));
   }
 
-  Widget cardElements(List<Purchase>? cours, int index){
-   // _addTags('cours![index].id.toString()', 'cours[index].name');
+  Widget cardElements(List<Purchase>? cours, int index) {
+    Courses cr = Courses.fromMap(cours![index].course);
+    print(cr.photo.toString());
+    //_addTags('cours![index].id.toString()', 'cours[index].name');
     return SafeArea(
         top: false,
         bottom: false,
@@ -126,39 +133,34 @@ class _Dashboard extends State<Dashboard> with SingleTickerProviderStateMixin {
           child: Card(
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              children: const <Widget>[
-                ListTile(
-                  //leading: imgWid(cours![index]),
-                  title: Text("test"),
-                ),
-                /*Row(
-                  mainAxisAlignment:
-                  MainAxisAlignment.end,
+              children: <Widget>[
+                /*Image(
+                  height: 100,
+                  width: 100,
+                  image: NetworkImage('https://www.estudesemfronteiras.com/novo/img/upload/${cours![index].course_id}/${cours![index].course.}'),
+                ),*/
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     Flexible(
                       child: Column(
-                        crossAxisAlignment:
-                        CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          _category.length > 0
+                          _category.isNotEmpty
                               ? Column(children: [
-                            Wrap(
-                              alignment:
-                              WrapAlignment.start,
-                              children: _category
-                                  .map(
-                                      (tagModel) =>
-                                      tagChip(
-                                        tagModel:
-                                        tagModel,
-                                        action:
-                                        'Remove',
-                                      ))
-                                  .toSet()
-                                  .toList(),
-                            ),
-                          ])
+                                  Wrap(
+                                    alignment: WrapAlignment.start,
+                                    children: _category
+                                        .map((tagModel) => tagChip(
+                                              tagModel: tagModel,
+                                              action: 'Remove',
+                                            ))
+                                        .toSet()
+                                        .toList(),
+                                  ),
+                                ])
                               : Container(),
                           //_buildSearchFieldWidget(),
                           //_displayTagWidget(),
@@ -167,52 +169,57 @@ class _Dashboard extends State<Dashboard> with SingleTickerProviderStateMixin {
                     ),
                     TextButton(
                       child: const Text('BUY TICKETS'),
-                      onPressed: () {/* ... */},
+                      onPressed: () {
+                        /* ... */
+                      },
                     ),
                     const SizedBox(width: 8),
                     TextButton(
                       child: const Text('LISTEN'),
-                      onPressed: () {/* ... */},
+                      onPressed: () {
+                        /* ... */
+                      },
                     ),
                     const SizedBox(width: 8),
                   ],
-                ),*/
+                ),
               ],
             ),
           ),
         ));
   }
-/*
-  Widget tagChip({tagModel,action,}) {
+
+  Widget tagChip({
+    tagModel,
+    action,
+  }) {
     return InkWell(
         child: Stack(
-          children: [
-            Container(
-              padding: EdgeInsets.symmetric(
-                vertical: 5.0,
-                horizontal: 5.0,
-              ),
-              child: Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 10.0,
-                  vertical: 10.0,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.deepOrangeAccent,
-                  borderRadius: BorderRadius.circular(100.0),
-                ),
-                child: Text(
-                  '${tagModel.title}',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15.0,
-                  ),
-                ),
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(
+            vertical: 5.0,
+            horizontal: 5.0,
+          ),
+          child: Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 10.0,
+              vertical: 10.0,
+            ),
+            decoration: BoxDecoration(
+              color: Colors.deepOrangeAccent,
+              borderRadius: BorderRadius.circular(100.0),
+            ),
+            child: Text(
+              '${tagModel.title}',
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 15.0,
               ),
             ),
-          ],
-        ));
-  }*/
+          ),
+        ),
+      ],
+    ));
+  }
 }
-
-

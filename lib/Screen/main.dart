@@ -28,7 +28,7 @@ const MyApp({Key? key}) : super(key: key);
         '/promocaoes' : (context) => About(),
         '/login' : (context)=> const LoginPage(),
         '/signup': (context)=> const SignPage(),
-        '/dashboard': (context)=> const Dashboard(),
+        '/dashboard': (context)=>  const Dashboard(),
         '/verify': (context)=> const VerifyPage()
       },
       home: SplashScreen(),
