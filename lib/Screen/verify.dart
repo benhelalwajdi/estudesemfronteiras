@@ -1,8 +1,11 @@
 import 'dart:async';
+import 'dart:convert';
 
+import 'package:estudesemfronteiras/common_widget/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_verification_code/flutter_verification_code.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 class VerifyPage extends StatefulWidget {
   const VerifyPage({Key? key}) : super(key: key);
 
@@ -16,12 +19,12 @@ class _VerifyPageState extends State<VerifyPage> {
   bool _isResendAgain = false;
   bool _isVerified = false;
   bool _isLoading = false;
-
   String _code = '';
 
   @override
-  void initState() {
+  void initState()  {
     super.initState();
+    getVerif();
   }
 
   late Timer _timer;
@@ -49,31 +52,52 @@ class _VerifyPageState extends State<VerifyPage> {
     );
   }
 
-  verify() {
-    setState(() {
-      _isLoading = true;
-    });
+  verify() async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    var list = _prefs.getStringList('validation');
+    if(list![1]== _code){
 
-    const oneSec = const Duration(milliseconds: 1000);
-    _timer = new Timer.periodic(
-      oneSec,
-          (Timer timer) {
-        setState(() {
-          _isLoading = false;
-          _isVerified = true;
-        });
-      },
-    );
+      print(_code);
+      setState(() {
+        _isLoading = true;
+      });
+
+      const oneSec = const Duration(milliseconds: 1000);
+      _timer = new Timer.periodic(
+        oneSec,
+            (Timer timer) {
+          setState(() {
+            _isLoading = false;
+            _isVerified = true;
+          });
+        },
+      );
+      print(_prefs.get('token').toString() + 'the token saved from user ');
+      Navigator.popAndPushNamed(context, '/dashboard');
+    }else {
+      setState(() {
+        _isLoading = true;
+      });
+
+      const oneSec = const Duration(milliseconds: 1000);
+      _timer = new Timer.periodic(
+        oneSec,
+            (Timer timer) {
+          setState(() {
+            _isVerified = false;
+          });
+        },
+      );
+    }
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[800],
       body: SingleChildScrollView(
         child: Container(
           height: MediaQuery.of(context).size.height,
           width: double.infinity,
-          padding: EdgeInsets.symmetric(horizontal: 20),
+          padding: EdgeInsets.symmetric(vertical: 25),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -83,7 +107,7 @@ class _VerifyPageState extends State<VerifyPage> {
                 height: 200,
                 padding: EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                    shape: BoxShape.circle, color: Colors.grey[900]),
+                    shape: BoxShape.circle, color: Colors.blue),
                 child: Transform.rotate(
                   angle: 38,
                   child: Image(
@@ -91,23 +115,23 @@ class _VerifyPageState extends State<VerifyPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 80),
+              SizedBox(height: 10),
               SizedBox(
                 height: 30,
               ),
               Text(
-                "Lütfen +90 553-367-1989 numaraya gönderilen 6 haneli doğrulama kodunu giriniz. ",
+                "Digite o código de verificação de 4 dígitos enviado para seu e-mail.",
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 16, height: 1.5, color: Colors.grey),
+                style: TextStyle(fontSize: 16, height: 1.5, color: Colors.blue),
               ),
               SizedBox(
                 height: 30,
               ),
               VerificationCode(
-                textStyle: TextStyle(fontSize: 20.0, color: Colors.black),
+                textStyle: TextStyle(fontSize: 20.0, color: Colors.blue),
                 underlineColor: Colors.blueAccent,
                 keyboardType: TextInputType.number,
-                length: 6,
+                length: 4,
                 onCompleted: (String value) {
                   setState(() {
                     _code = value;
@@ -126,9 +150,9 @@ class _VerifyPageState extends State<VerifyPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Doğrulama Kodu Almadın mı?",
+                    "Não recebeu o código de verificação?",
                     style: TextStyle(
-                        fontSize: 14, height: 1.5, color: Colors.grey.shade500),
+                        fontSize: 14, height: 1.5, color: Colors.blue),
                   ),
                   TextButton(
                       onPressed: () {
@@ -137,8 +161,8 @@ class _VerifyPageState extends State<VerifyPage> {
                       },
                       child: Text(
                         _isResendAgain
-                            ? 'Tekrar deneyin ' + _start.toString()
-                            : "Tekrar Gönder",
+                            ? 'Tente novamente ' + _start.toString()
+                            : "Envie novamente ",
                         style: TextStyle(
                             fontSize: 14,
                             height: 1.5,
@@ -150,14 +174,16 @@ class _VerifyPageState extends State<VerifyPage> {
                 height: 50,
               ),
               MaterialButton(
-                  disabledColor: Colors.grey[900],
+                  disabledColor: Colors.blue,
                   height: 50,
-                  onPressed: _code.length < 6
+                  onPressed: _code.length < 4
                       ? null
                       : () {
+
+                          print('test');
                           verify();
                         },
-                  minWidth: double.infinity,
+                  minWidth: 200,
                   color: Colors.black,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5)),
@@ -178,20 +204,22 @@ class _VerifyPageState extends State<VerifyPage> {
                               size: 30,
                             )
                           : Text(
-                              'Doğrula',
+                              'Verificar',
                               style: TextStyle(color: Colors.white),
                             )),
               SizedBox(
                 height: 30,
               ),
-              Text(
-                "@Countrol4offical",
-                style: TextStyle(color: Colors.white, fontSize: 15),
-              )
             ],
           ),
         ),
       ),
     );
+  }
+
+  Future<void> getVerif() async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    List<String>? verif = _prefs.getStringList("validation");
+    _code = verif![1];
   }
 }
