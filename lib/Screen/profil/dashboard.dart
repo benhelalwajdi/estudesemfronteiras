@@ -1,13 +1,16 @@
 import 'dart:async';
 import 'dart:convert';
+
+import 'package:estudesemfronteiras/Entity/category.dart';
 import 'package:estudesemfronteiras/Entity/courses.dart';
 import 'package:estudesemfronteiras/Entity/purchase.dart';
-import 'package:http/http.dart' as http;
 import 'package:estudesemfronteiras/common_widget/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+
 import 'common_widget/drawer_dash_widget.dart';
 
 class Dashboard extends StatefulWidget {
@@ -29,6 +32,7 @@ class _Dashboard extends State<Dashboard> with SingleTickerProviderStateMixin {
   Future<List<Purchase>> fetchCourses(id) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     var token = _pref.get('token');
+    //print(token);
     var id = _pref.get('id');
     var url = 'http://192.168.1.123:8765/courses/myCourses/' + id.toString();
     final response = await http.get(Uri.parse(url), headers: {
@@ -36,6 +40,11 @@ class _Dashboard extends State<Dashboard> with SingleTickerProviderStateMixin {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',
     });
+    //print(response.statusCode.toString());
+    if (response.statusCode != 200) {
+      _pref.remove('token');
+      Navigator.popAndPushNamed(context, 'login');
+    }
     var body = response.body;
     var json = jsonDecode(body);
     var parsed = json["courses"].cast<Map<String, dynamic>>();
@@ -89,10 +98,8 @@ class _Dashboard extends State<Dashboard> with SingleTickerProviderStateMixin {
               title: const Text("Meu cursos"),
               actions: [
                 IconButton(
-                  icon: const Icon(Icons.refresh),
-                  onPressed: () async =>
-                      await _androidRefreshKey.currentState!.show(),
-                ),
+                    icon: const Icon(Icons.refresh),
+                    onPressed: () async => futureCourses = fetchCourses(1)),
               ],
             ),
             drawer: const DrawerDashWidget(),
@@ -123,70 +130,103 @@ class _Dashboard extends State<Dashboard> with SingleTickerProviderStateMixin {
   }
 
   Widget cardElements(List<Purchase>? cours, int index) {
-    Courses cr = Courses.fromMap(cours![index].course);
-    print(cr.photo.toString());
+    _category = [];
+    double cWidth = MediaQuery.of(context).size.width;
+    double cHeight = MediaQuery.of(context).size.height;
+    var cr = Courses.fromMap(cours![index].course);
+    Category cat = Category.fromMap(cr.category);
+    print(cat.title.toString());
+    _category.add(cat);
+    //for(int i=0; i)
     //_addTags('cours![index].id.toString()', 'cours[index].name');
-    return SafeArea(
+    return SizedBox(
+    width: cWidth,
+    height: cHeight*0.27,
+    child: SafeArea(
         top: false,
         bottom: false,
+        right: false,
+        left: false,
         child: Center(
           child: Card(
-            child: Column(
+            child: Row(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                /*Image(
-                  height: 100,
-                  width: 100,
-                  image: NetworkImage('https://www.estudesemfronteiras.com/novo/img/upload/${cours![index].course_id}/${cours![index].course.}'),
-                ),*/
-
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    Flexible(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          _category.isNotEmpty
-                              ? Column(children: [
-                                  Wrap(
-                                    alignment: WrapAlignment.start,
-                                    children: _category
-                                        .map((tagModel) => tagChip(
-                                              tagModel: tagModel,
-                                              action: 'Remove',
-                                            ))
-                                        .toSet()
-                                        .toList(),
-                                  ),
-                                ])
-                              : Container(),
-                          //_buildSearchFieldWidget(),
-                          //_displayTagWidget(),
-                        ],
+                Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Image(
+                        height: 100,
+                        width: 100,
+                        image: NetworkImage(
+                            'https://www.estudesemfronteiras.com/novo/img/upload/${cr.course_id}/${cr.photo}'),
                       ),
+                    ]),
+                SizedBox(width: 10),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: cWidth*0.6,
+                      height: cHeight*0.1,
+                      child:Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                                width: cWidth * 0.5, // Some height
+                                child: Column(
+                                  children: [
+                                    Text(cr.name),
+                                  ],
+                                )),
+                          ]),
                     ),
-                    TextButton(
-                      child: const Text('BUY TICKETS'),
-                      onPressed: () {
-                        /* ... */
-                      },
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        _category.isNotEmpty
+                            ? Column(children: [
+                                Wrap(
+                                  alignment: WrapAlignment.start,
+                                  children: _category
+                                      .map((tagModel) => tagChip(
+                                            tagModel: tagModel,
+                                            action: 'Remove',
+                                          ))
+                                      .toSet()
+                                      .toList(),
+                                ),
+                              ])
+                            : Container(),
+                      ],
                     ),
-                    const SizedBox(width: 8),
-                    TextButton(
-                      child: const Text('LISTEN'),
-                      onPressed: () {
-                        /* ... */
-                      },
-                    ),
-                    const SizedBox(width: 8),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          TextButton(
+                            child: const Text('BUY TICKETS'),
+                            onPressed: () {
+                              /* ... */
+                            },
+                          ),
+                          TextButton(
+                            child: const Text('LISTEN'),
+                            onPressed: () {
+                              /* ... */
+                            },
+                          ),
+                        ]),
                   ],
                 ),
               ],
             ),
           ),
-        ));
+        )));
   }
 
   Widget tagChip({
@@ -211,10 +251,10 @@ class _Dashboard extends State<Dashboard> with SingleTickerProviderStateMixin {
               borderRadius: BorderRadius.circular(100.0),
             ),
             child: Text(
-              '${tagModel.title}',
+              '${tagModel.name}',
               style: const TextStyle(
                 color: Colors.white,
-                fontSize: 15.0,
+                fontSize: 11.0,
               ),
             ),
           ),
