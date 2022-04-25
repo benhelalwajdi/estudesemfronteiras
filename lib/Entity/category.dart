@@ -35,19 +35,19 @@ class Category {
   factory Category.fromMap(Map<String, dynamic> json) =>
       Category(
           id: json['id'],
-          name: json['orif_id'],
-          exibicao: json['course_id'],
-          imagem: json['user_id'],
-          description: json['purchase_status'],
-          canonical: json['active'],
-          meta_description: json['access_time'],
-          title: json['date_hour'],
-          redirecionamento_301: json['good_thru'],
-          redirecionamento_302: json['trash'],
-          subcategories: json['coupon_info'],
-          slug: json['type'],
-          visivel: json['active_tests'],
-          trash: json['ted']
+          name: json['name'],
+          exibicao: json['exibicao'],
+          imagem: json['imagem'],
+          description: json['description'],
+          canonical: json['canonical'],
+          meta_description: json['meta_description'],
+          title: json['title'],
+          redirecionamento_301: json['redirecionamento_301'],
+          redirecionamento_302: json['redirecionamento_302'],
+          subcategories: json['subcategories'],
+          slug: json['slug'],
+          visivel: json['visivel'],
+          trash: json['trash']
       );
 
 }
