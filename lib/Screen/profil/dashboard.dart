@@ -122,6 +122,11 @@ class _Dashboard extends State<Dashboard> with SingleTickerProviderStateMixin {
                                 cardElements(snapshot.data, index),
                           ),
                         ))),
+                        TextButton(
+                            child: const Text('LISTEN'),
+                            onPressed: () {
+                              /* ... */
+                            }),
                       ],
                     );
                   }
@@ -140,93 +145,93 @@ class _Dashboard extends State<Dashboard> with SingleTickerProviderStateMixin {
     //for(int i=0; i)
     //_addTags('cours![index].id.toString()', 'cours[index].name');
     return SizedBox(
-    width: cWidth,
-    height: cHeight*0.27,
-    child: SafeArea(
-        top: false,
-        bottom: false,
-        right: false,
-        left: false,
-        child: Center(
-          child: Card(
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Image(
-                        height: 100,
-                        width: 100,
-                        image: NetworkImage(
-                            'https://www.estudesemfronteiras.com/novo/img/upload/${cr.course_id}/${cr.photo}'),
-                      ),
-                    ]),
-                SizedBox(width: 10),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: cWidth*0.6,
-                      height: cHeight*0.1,
-                      child:Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                                width: cWidth * 0.5, // Some height
-                                child: Column(
-                                  children: [
-                                    Text(cr.name),
-                                  ],
-                                )),
-                          ]),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        _category.isNotEmpty
-                            ? Column(children: [
-                                Wrap(
-                                  alignment: WrapAlignment.start,
-                                  children: _category
-                                      .map((tagModel) => tagChip(
-                                            tagModel: tagModel,
-                                            action: 'Remove',
-                                          ))
-                                      .toSet()
-                                      .toList(),
-                                ),
-                              ])
-                            : Container(),
-                      ],
-                    ),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
+        width: cWidth,
+        height: cHeight * 0.27,
+        child: SafeArea(
+            top: false,
+            bottom: false,
+            right: false,
+            left: false,
+            child: Center(
+              child: Card(
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          TextButton(
-                            child: const Text('BUY TICKETS'),
-                            onPressed: () {
-                              /* ... */
-                            },
-                          ),
-                          TextButton(
-                            child: const Text('LISTEN'),
-                            onPressed: () {
-                              /* ... */
-                            },
+                          Image(
+                            height: 100,
+                            width: 100,
+                            image: NetworkImage(
+                                'https://www.estudesemfronteiras.com/novo/img/upload/${cr.course_id}/${cr.photo}'),
                           ),
                         ]),
+                    SizedBox(width: 10),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          width: cWidth * 0.6,
+                          height: cHeight * 0.1,
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                    width: cWidth * 0.5, // Some height
+                                    child: Column(
+                                      children: [
+                                        Text(cr.name),
+                                      ],
+                                    )),
+                              ]),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            _category.isNotEmpty
+                                ? Column(children: [
+                                    Wrap(
+                                      alignment: WrapAlignment.start,
+                                      children: _category
+                                          .map((tagModel) => tagChip(
+                                                tagModel: tagModel,
+                                                action: 'Remove',
+                                              ))
+                                          .toSet()
+                                          .toList(),
+                                    ),
+                                  ])
+                                : Container(),
+                          ],
+                        ),
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              TextButton(
+                                child: const Text('BUY TICKETS'),
+                                onPressed: () {
+                                  /* ... */
+                                },
+                              ),
+                              TextButton(
+                                child: const Text('LISTEN'),
+                                onPressed: () {
+                                  /* ... */
+                                },
+                              ),
+                            ]),
+                      ],
+                    ),
                   ],
                 ),
-              ],
-            ),
-          ),
-        )));
+              ),
+            )));
   }
 
   Widget tagChip({

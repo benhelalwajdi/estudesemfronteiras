@@ -3,6 +3,7 @@ import 'package:estudesemfronteiras/Screen/my_home_page.dart';
 import 'package:estudesemfronteiras/Screen/profil/dashboard.dart';
 import 'package:estudesemfronteiras/Screen/splash_screen.dart';
 import 'package:estudesemfronteiras/Screen/verify.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'signup.dart';
 import 'login.dart';
@@ -31,6 +32,12 @@ const MyApp({Key? key}) : super(key: key);
         '/dashboard': (context)=>  const Dashboard(),
         '/verify': (context)=> const VerifyPage()
       },
+      builder: (BuildContext context, Widget? widget) {
+        ErrorWidget.builder = (FlutterErrorDetails errorDetails) {
+          return CustomError(errorDetails: errorDetails);
+        };
+        return widget!;
+      },
       home: SplashScreen(),
       theme: ThemeData(
           fontFamily: 'Roboto',
@@ -41,6 +48,52 @@ const MyApp({Key? key}) : super(key: key);
     );
   }
 }
+
+
+class CustomError extends StatelessWidget {
+  final FlutterErrorDetails errorDetails;
+
+  const CustomError({
+    Key? key,
+    required this.errorDetails,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+                'assets/images/error_illustration.png'),
+            Text(
+              kDebugMode
+                  ? errorDetails.summary.toString()
+                  : 'Oups! Something went wrong!',
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                  color: kDebugMode ? Colors.red : Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 21),
+            ),
+            const SizedBox(height: 12),
+            const Text(
+              kDebugMode
+                  ? 'https://docs.flutter.dev/testing/errors'
+                  : "We encountered an error and we've notified our engineering team about it. Sorry for the inconvenience caused.",
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.black, fontSize: 14),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 int currentIndex = 0;
 
 void navigateToScreens(int index) {
