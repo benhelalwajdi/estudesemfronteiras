@@ -29,31 +29,7 @@ class _Dashboard extends State<Dashboard> with SingleTickerProviderStateMixin {
     if (mounted) setState(fn);
   }
 
-  Future<List<Purchase>> fetchCourses(id) async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
-    var token = _pref.get('token');
-    //print(token);
-    var id = _pref.get('id');
-    var url = 'http://192.168.1.123:8765/courses/myCourses/' + id.toString();
-    final response = await http.get(Uri.parse(url), headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': 'Bearer $token',
-    });
-    //print(response.statusCode.toString());
-    if (response.statusCode != 200) {
-      _pref.remove('token');
-      Navigator.popAndPushNamed(context, 'login');
-    }
-    var body = response.body;
-    var json = jsonDecode(body);
-    var parsed = json["courses"].cast<Map<String, dynamic>>();
-    // print(json["courses"].toString());
-    // print(parsed.map<Purchase>((json) => Purchase.fromMap(json)).toList());
-    return parsed.map<Purchase>((json) => Purchase.fromMap(json)).toList();
-  }
-
-  late Future<List<Purchase>> futureCourses = fetchCourses(1);
+  late Future<List<Purchase>> futureCourses ;
   static const _itemsLength = 3;
   final _androidRefreshKey = GlobalKey<RefreshIndicatorState>();
   late List<MaterialColor> colors = [];
@@ -125,6 +101,9 @@ class _Dashboard extends State<Dashboard> with SingleTickerProviderStateMixin {
                         TextButton(
                             child: const Text('LISTEN'),
                             onPressed: () {
+                              setState(() {
+                                futureCourses = fetchCourses(5);
+                              });
                               /* ... */
                             }),
                       ],
@@ -218,7 +197,7 @@ class _Dashboard extends State<Dashboard> with SingleTickerProviderStateMixin {
                                 onPressed: () {
                                   /* ... */
                                 },
-                              ),
+                  ),
                               TextButton(
                                 child: const Text('LISTEN'),
                                 onPressed: () {
@@ -267,4 +246,59 @@ class _Dashboard extends State<Dashboard> with SingleTickerProviderStateMixin {
       ],
     ));
   }
+
+  Future<List<Purchase>> fetchCourses(id) async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    var token = _pref.get('token');
+    //print(token);
+    var id = _pref.get('id');
+    var url = 'http://192.168.1.123:8765/courses/myCourses/' + id.toString();
+    final response = await http.get(Uri.parse(url), headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    });
+    //print(response.statusCode.toString());
+    if (response.statusCode != 200) {
+      _pref.remove('token');
+      Navigator.popAndPushNamed(context, 'login');
+    }
+    var body = response.body;
+    var json = jsonDecode(body);
+    var parsed = json["courses"].cast<Map<String, dynamic>>();
+    // print(json["courses"].toString());
+    // print(parsed.map<Purchase>((json) => Purchase.fromMap(json)).toList());
+    return parsed.map<Purchase>((json) => Purchase.fromMap(json)).toList();
+  }
+
+  void fetch2Courses(id) async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    var token = _pref.get('token');
+    //print(token);
+    var id = _pref.get('id');
+    var url = 'http://192.168.1.123:8765/courses/myCourses/' + id.toString();
+    final response = await http.get(Uri.parse(url), headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    });
+    //print(response.statusCode.toString());
+    if (response.statusCode != 200) {
+      _pref.remove('token');
+      Navigator.popAndPushNamed(context, 'login');
+    }
+    var body = response.body;
+    var json = jsonDecode(body);
+    var parsed = json["courses"].cast<Map<String, dynamic>>();
+     //print(json["courses"].toString());
+    List<Purchase> a = parsed.map<Purchase>((json) => Purchase.fromMap(json)).toList();
+    print(a[0].course.toString());
+    futureCourses.then((value){
+      futureCourses = fetchCourses(5)  ;
+    });
+
+    // print(parsed.map<Purchase>((json) => Purchase.fromMap(json)).toList());
+    //return parsed.map<Purchase>((json) => Purchase.fromMap(json)).toList();
+  }
+
 }
