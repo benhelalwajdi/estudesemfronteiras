@@ -36,7 +36,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future fetchCourses(id) async {
     print('test');
-    var url = 'http://192.168.1.123:8765/courses?page=' + id.toString();
+    var url = 'http://192.168.1.123:8765/courses?page=' + id.toString()+'&limit=10';
     String body;
     var json;
     var parsed;

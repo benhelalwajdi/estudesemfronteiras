@@ -475,7 +475,7 @@ class _MyHomePageNewState extends State<MyHomePage> {
                             ),
                           ),
                           SizedBox(
-                            height: 600,
+                            height: 500,
                             child: ListView.builder(
                               padding: const EdgeInsets.symmetric(vertical: 1),
                               itemCount: snapshot.data!.length,

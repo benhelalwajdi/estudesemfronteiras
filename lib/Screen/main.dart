@@ -71,8 +71,8 @@ class CustomError extends StatelessWidget {
                 'assets/images/error_illustration.png'),
             Text(
               kDebugMode
-                  ? errorDetails.summary.toString()
-                  : 'Oups! Something went wrong!',
+                  ? 'Ops! Algo deu errado!'
+                  : 'Ops! Algo deu errado!',
               textAlign: TextAlign.center,
               style: const TextStyle(
                   color: kDebugMode ? Colors.red : Colors.black,
@@ -82,8 +82,8 @@ class CustomError extends StatelessWidget {
             const SizedBox(height: 12),
             const Text(
               kDebugMode
-                  ? 'https://docs.flutter.dev/testing/errors'
-                  : "We encountered an error and we've notified our engineering team about it. Sorry for the inconvenience caused.",
+                  ? 'https://www.estudesemfronteiras.com'
+                  : "Encontramos um erro e notificamos nossa equipe de engenharia sobre isso. Desculpe pela inconveniência causada.",
               textAlign: TextAlign.center,
               style: TextStyle(color: Colors.black, fontSize: 14),
             ),

@@ -154,6 +154,6 @@ class Courses {
     livro_texto: json['livro_texto'],
     descricao_rodape: json['descricao_rodape'],
     prm_produto_id: json['prm_produto_id'],
-      category: json['category']
+    category: json['category']
   );
 }
