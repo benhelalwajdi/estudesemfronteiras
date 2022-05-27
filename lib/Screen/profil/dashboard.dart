@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:estudesemfronteiras/Entity/category.dart';
 import 'package:estudesemfronteiras/Entity/courses.dart';
 import 'package:estudesemfronteiras/Entity/purchase.dart';
 import 'package:flutter/cupertino.dart';
@@ -106,8 +107,7 @@ class _Dashboard extends State<Dashboard> with SingleTickerProviderStateMixin {
                           child: ListView.builder(
                               shrinkWrap: true,
                               itemCount: snapshot.data!.length,
-                              itemBuilder: (_, index) =>
-                                  cardElements(snapshot.data, index)),
+                              itemBuilder: (_, index) => cardElements(snapshot.data, index)),
                         ),
                       ),
                     ]);
@@ -119,180 +119,67 @@ class _Dashboard extends State<Dashboard> with SingleTickerProviderStateMixin {
   }
 
   Widget cardElements(List<Purchase>? cours, int index) {
+
+    try {
     _category = [];
     double cWidth = MediaQuery.of(context).size.width;
     double cHeight = MediaQuery.of(context).size.height;
     var cr = Courses.fromMap(cours![index].course);
 
-    return /*GFCard(
-      boxFit: BoxFit.cover,
-      titlePosition: GFPosition.start,
-      image: Image.asset(
-        'lib/assets/cup.jpg',
-        height: MediaQuery.of(context).size.height * 0.2,
-        width: MediaQuery.of(context).size.width,
-        fit: BoxFit.cover,
-      ),
-      showImage: true,
-      title: const GFListTile(
-        avatar: GFAvatar(
-          backgroundImage: AssetImage('your asset image'),
-        ),
-        titleText: 'Game Controllers',
-        subTitleText: 'PlayStation 4',
-      ),
-      content: Text(),
-      buttonBar: const GFButtonBar(
-        children: <Widget>[
-          GFAvatar(
-            backgroundColor: GFColors.PRIMARY,
-            child: Icon(
-              Icons.share,
-              color: Colors.white,
-            ),
+    //var category = Category.fromMap(cr.category);
+    if(cr.photo == null){
+      return Container();
+    }else{
+        print(cr.category["name"].toString());
+        return GFCard(
+          image: image(cr.course_id, cr.photo),
+          showImage: true,
+          boxFit: BoxFit.cover,
+          titlePosition: GFPosition.end,
+          title: GFListTile(
+            titleText: cr.name,
           ),
-          GFAvatar(
-            backgroundColor: GFColors.SECONDARY,
-            child: Icon(
-              Icons.search,
-              color: Colors.white,
-            ),
+          content: Row(
+            children: [
+              cr.category == null ? Container() : GFBadge(
+          size: 50, child:   Text( cr.category["name"].toString()),textStyle: TextStyle(fontSize: 10),),
+              GFButtonBadge(
+                onPressed: () {},
+                color: Colors.blueGrey,
+                text: "cff",
+              ),
+            ],
           ),
-          GFAvatar(
-            backgroundColor: GFColors.SUCCESS,
-            child: Icon(
-              Icons.phone,
-              color: Colors.white,
-            ),
-          ),
-        ],
-      ),
-    ); */
-
-      SizedBox(
-      width: 500,
-      height: cHeight * 0.27,
-      child: SafeArea(
-        top: false,
-        bottom: false,
-        right: false,
-        left: false,
-        child: Center(
-          child: Card(
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        image(cr.course_id, cr.photo),
-                      ]),
-                  Container(
-                    padding: const EdgeInsets.all(16.0),
-                    width: MediaQuery.of(context).size.width * 0.7,
-                    child: new Column(
-                      children:<Widget> [
-                        new Text (cr.name, textAlign: TextAlign.left),
-                       ],
-                    ),
-                  ),
-                ]),
-          ),
-        ),
-      ),
-    );
-    //var parsed = cr.category.cast<Map<String, dynamic>>();
-    //var cat = Category.fromMap(parsed);
-    //print(cat.title.toString());
-    // _category.add(cat);
-    //for(int i=0; i)
-    //_addTags('cours![index].id.toString()', 'cours[index].name');
-/*
-    return SizedBox(
-        width: cWidth,
-        height: cHeight * 0.27,
-        child: SafeArea(
-            top: false,
-            bottom: false,
-            right: false,
-            left: false,
-            child: Center(
-              child: Card(
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Image(
-                            height: 100,
-                            width: 100,
-                            image: NetworkImage(
-                                'https://www.estudesemfronteiras.com/novo/img/upload/${cr.course_id}/${cr.photo}'),
-                          ),
-                        ]),
-                    SizedBox(width: 10),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          width: cWidth * 0.5,
-                          height: cHeight * 0.2,
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                    width: cWidth * 0.5, // Some height
-                                    child: Column(
-                                      children: [
-                                        Text(cr.name),
-                                      ],
-                                    )),
-                              ]),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            _category.isNotEmpty
-                                ? Column(children: [
-                                    Wrap(
-                                      alignment: WrapAlignment.start,
-                                      children: _category
-                                          .map((tagModel) => tagChip(
-                                                tagModel: tagModel,
-                                                action: 'Remove',
-                                              ))
-                                          .toSet()
-                                          .toList(),
-                                    ),
-                                  ])
-                                : Container(),
-                          ],
-                        ),
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              TextButton(
-                                child: const Text('BUY TICKETS'),
-                                onPressed: () {
-                                  /* ... */
-                                },
-                  ),
-
-                            ]),
-                      ],
-                    ),
-                  ],
+          buttonBar: const GFButtonBar(
+            children: <Widget>[
+              GFAvatar(
+                backgroundColor: GFColors.PRIMARY,
+                child: Icon(
+                  Icons.share,
+                  color: Colors.white,
                 ),
               ),
-            )));*/
+              GFAvatar(
+                backgroundColor: GFColors.SECONDARY,
+                child: Icon(
+                  Icons.search,
+                  color: Colors.white,
+                ),
+              ),
+              GFAvatar(
+                backgroundColor: GFColors.SUCCESS,
+                child: Icon(
+                  Icons.phone,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+        );
+      }
+      }catch(e){
+      return Container();
+    }
   }
 
   Widget tagChip({
@@ -364,12 +251,15 @@ class _Dashboard extends State<Dashboard> with SingleTickerProviderStateMixin {
       //launch(url);
       return Image.network(
         'https://www.estudesemfronteiras.com/novo/img/upload/${id}/${photo}',
-        width: 100,
-        height: 100,
-        fit: BoxFit.fitWidth,
+        height: MediaQuery.of(context).size.height * 0.2,
+        width: MediaQuery.of(context).size.width,
+        fit: BoxFit.cover,
       );
     } else {
-      return Image.asset('assets/images/imgCours.png',width: 100,height: 100,fit:BoxFit.fitWidth);
+      return Image.asset('assets/images/imgCours.png',
+          height: MediaQuery.of(context).size.height * 0.2,
+          width: MediaQuery.of(context).size.width,
+          fit:BoxFit.cover);
     }
   }
 }
