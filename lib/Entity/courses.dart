@@ -109,7 +109,7 @@ class Courses {
   factory Courses.fromMap(Map<String, dynamic> json) => Courses(
     id: json['id'],
     course_id: json['course_id'],
-    sagah: json['sagah'],
+    sagah: json['sagah.dart'],
     category_id: json['category_id'],
     subcategoria_id: json['subcategoria_id'],
     type: json['type'],
@@ -154,6 +154,6 @@ class Courses {
     livro_texto: json['livro_texto'],
     descricao_rodape: json['descricao_rodape'],
     prm_produto_id: json['prm_produto_id'],
-      category: json['category']
+    category: json['category']
   );
 }
